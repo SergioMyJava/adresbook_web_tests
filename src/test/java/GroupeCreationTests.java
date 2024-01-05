@@ -67,4 +67,15 @@ public class GroupeCreationTests {
         driver.findElement(By.linkText("group page")).click();
 
     }
+
+    @Test
+    public void deleteNewGroupeWithEmptyName() {
+        if (!elementPresent(By.name("next_test_group"))) {
+            createNewGroupe();
+        }
+
+
+
+    }
+
 }
