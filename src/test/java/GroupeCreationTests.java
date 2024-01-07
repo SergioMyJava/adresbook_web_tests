@@ -1,3 +1,4 @@
+import model.GroupData;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -8,14 +9,14 @@ public class GroupeCreationTests extends TestBase {
     public void createNewGroupe() {
         openGroupsPage();
 
-        createGroup("next_test_group", "Group header", "groupe footer");
+        createGroup(new GroupData("next_test_group", "Group header", "groupe footer"));
 
     }
 
     @Test
     public void createNewGroupeWithEmptyName() {
         openGroupsPage();
-        createGroup("", "", "");
+        createGroup(new GroupData("", "", ""));
 
     }
 
@@ -24,5 +25,13 @@ public class GroupeCreationTests extends TestBase {
         if (!elementPresent(By.name("next_test_group"))) {
             createNewGroupe();
         }
+    }
+
+    @Test
+    public void createNewGroupeWithNameOnly() {
+        openGroupsPage();
+        GroupData emptyGroupe = new GroupData() ;
+        GroupData groupeWithName = new GroupData().withName("someName") ;
+        createGroup(groupeWithName);
     }
 }
