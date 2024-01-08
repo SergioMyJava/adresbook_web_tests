@@ -31,7 +31,7 @@ public class GroupeCreationTests extends TestBase {
     public void createNewGroupeWithNameOnly() {
         openGroupsPage();
         GroupData emptyGroupe = new GroupData() ;
-        GroupData groupeWithName = new GroupData().withName("someName") ;
+        GroupData groupeWithName = new GroupData().withName("someName1") ;
         createGroup(groupeWithName);
     }
 }

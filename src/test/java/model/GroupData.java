@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 public final class GroupData {
     private final String name;
     private final String header;
@@ -30,14 +28,14 @@ public final class GroupData {
     }
 
     public GroupData withName(String someName) {
-        return new GroupData("someName", this.header,this.footer);
+        return new GroupData(someName, this.header,this.footer);
     }
 
     public GroupData withHeader(String someHeader) {
-        return new GroupData(this.name, "someHeader",this.footer);
+        return new GroupData(this.name, someHeader,this.footer);
     }
 
     public GroupData withFooter(String someFooter) {
-        return new GroupData(this.name, this.header,"someFooter");
+        return new GroupData(this.name, this.header,someFooter);
     }
 }

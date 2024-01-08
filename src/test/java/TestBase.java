@@ -1,9 +1,7 @@
 import model.GroupData;
+import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TestBase {
@@ -44,9 +42,65 @@ public class TestBase {
         driver.findElement(By.linkText("group page")).click();
     }
 
+    protected void createUserInAdressbook(UserData userData) {
+        driver.findElement(By.name("firstname")).click();
+        driver.findElement(By.name("firstname")).sendKeys(userData.getFirstname());
+        driver.findElement(By.name("middlename")).click();
+        driver.findElement(By.name("middlename")).sendKeys(userData.getMiddlename());
+        driver.findElement(By.name("lastname")).click();
+        driver.findElement(By.name("lastname")).sendKeys(userData.getLastname());
+        driver.findElement(By.name("nickname")).click();
+        driver.findElement(By.name("nickname")).sendKeys(userData.getNickname());
+        driver.findElement(By.name("title")).click();
+        driver.findElement(By.name("title")).sendKeys(userData.getTitle());
+        driver.findElement(By.name("company")).click();
+        driver.findElement(By.name("company")).sendKeys(userData.getCompany());
+        driver.findElement(By.name("address")).click();
+        driver.findElement(By.name("address")).sendKeys(userData.getAddress());
+        driver.findElement(By.name("home")).click();
+        driver.findElement(By.name("home")).sendKeys(userData.getHome());
+        driver.findElement(By.name("mobile")).click();
+        driver.findElement(By.name("mobile")).sendKeys(userData.getMobile());
+        driver.findElement(By.name("work")).click();
+        driver.findElement(By.name("work")).sendKeys(userData.getWork());
+        driver.findElement(By.name("fax")).click();
+        driver.findElement(By.name("fax")).sendKeys(userData.getFax());
+        driver.findElement(By.name("email")).click();
+        driver.findElement(By.cssSelector("body")).click();
+        driver.findElement(By.name("email")).sendKeys(userData.getEmail());
+        driver.findElement(By.name("email2")).click();
+        driver.findElement(By.name("email2")).sendKeys(userData.getEmail2());
+        driver.findElement(By.name("email3")).click();
+        driver.findElement(By.name("email3")).sendKeys(userData.getEmail3());
+        driver.findElement(By.name("homepage")).click();
+        driver.findElement(By.name("homepage")).sendKeys("Home page");
+        driver.findElement(By.cssSelector("input:nth-child(75)")).click();
+
+//        {
+//            WebElement dropdown = driver.findElement(By.name("bday"));
+//            dropdown.findElement(By.xpath("//option[. = '1']")).click();
+//        }
+//        driver.findElement(By.name("bmonth")).click();
+//        {
+//            WebElement dropdown = driver.findElement(By.name("bmonth"));
+//            dropdown.findElement(By.xpath("//option[. = 'January']")).click();
+//        }
+//        driver.findElement(By.name("byear")).click();
+//        driver.findElement(By.name("byear")).sendKeys("1990");
+//        driver.findElement(By.cssSelector("input:nth-child(75)")).click();
+//        driver.findElement(By.linkText("home page")).click();
+    }
+
+
     protected void openGroupsPage() {
         if (!elementPresent(By.name("new"))) {
             driver.findElement(By.linkText("groups")).click();
+        }
+    }
+
+    protected void openAddNewPage() {
+        if (!elementPresent(By.name("add new"))) {
+            driver.findElement(By.linkText("add new")).click();
         }
     }
 
