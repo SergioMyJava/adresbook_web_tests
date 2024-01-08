@@ -12,7 +12,7 @@ public class TestBase {
         if (driver == null) {
             driver = new ChromeDriver();
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
-            driver.get("http://localhost/addressbook/addressbook/");
+            driver.get("http://localhost/addressbook/");
             driver.manage().window().setSize(new Dimension(968, 728));
             driver.findElement(By.name("user")).sendKeys("admin");
             driver.findElement(By.name("pass")).sendKeys("secret");
@@ -105,6 +105,10 @@ public class TestBase {
     }
 
     protected boolean isGroupPresent() {
+        return elementPresent(By.name("selected[]"));
+    }
+
+    protected boolean isUserPresent() {
         return elementPresent(By.name("selected[]"));
     }
 
