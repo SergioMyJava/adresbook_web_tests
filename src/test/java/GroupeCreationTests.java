@@ -1,22 +1,23 @@
-import model.GroupData;
+import manager.ApplicationManager;
+import manager.GroupHelper;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
-public class GroupeCreationTests extends TestBase {
+public class GroupeCreationTests extends ApplicationManager {
 
 
     @Test
     public void createNewGroupe() {
         openGroupsPage();
 
-        createGroup(new GroupData("next_test_group", "Group header", "groupe footer"));
+        createGroup(new GroupHelper("next_test_group", "Group header", "groupe footer"));
 
     }
 
     @Test
     public void createNewGroupeWithEmptyName() {
         openGroupsPage();
-        createGroup(new GroupData("", "", ""));
+        createGroup(new GroupHelper("", "", ""));
 
     }
 
@@ -30,8 +31,8 @@ public class GroupeCreationTests extends TestBase {
     @Test
     public void createNewGroupeWithNameOnly() {
         openGroupsPage();
-        GroupData emptyGroupe = new GroupData() ;
-        GroupData groupeWithName = new GroupData().withName("someName1") ;
+        GroupHelper emptyGroupe = new GroupHelper() ;
+        GroupHelper groupeWithName = new GroupHelper().withName("someName1") ;
         createGroup(groupeWithName);
     }
 }

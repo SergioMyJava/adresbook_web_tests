@@ -1,6 +1,7 @@
-package model;
+package manager;
 
-public class UserData {
+
+public class UserHelper {
     private final String firstname;
     private final String middlename;
     private final String lastname;
@@ -18,7 +19,7 @@ public class UserData {
     private final String homepage;
     private final String byear;
 
-    public UserData(String firstname, String middlename, String lastname, String nickname, String title,
+    public UserHelper(String firstname, String middlename, String lastname, String nickname, String title,
                     String company, String address, String home, String mobile, String work, String fax,
                     String email, String email2, String email3, String homepage, String byear) {
         this.firstname = firstname;
@@ -39,7 +40,7 @@ public class UserData {
         this.byear = byear;
     }
 
-    public UserData(){
+    public UserHelper(){
         this("","","","","","","","","","",
                 "","","","","","");
     }
@@ -108,23 +109,23 @@ public class UserData {
         return byear;
     }
 
-    public UserData userWithFullNameAdressMobile(String firstname, String middlename,String lastname,String address,
+    public UserHelper userWithFullNameAdressMobile(String firstname, String middlename, String lastname, String address,
                                                  String mobile){
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
+        return new UserHelper(firstname, middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
                 this.email, this.email2, this.email3, this.homepage, this.byear);
     }
 
-    public UserData userWithFullNameAdressMobileEmail(String firstname, String middlename,String lastname,
+    public UserHelper userWithFullNameAdressMobileEmail(String firstname, String middlename,String lastname,
                                                       String address,String mobile,String email){
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
+        return new UserHelper(firstname, middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
                 email, this.email2, this.email3, this.homepage, this.byear);
     }
 
-    public UserData userWithFullNameAdressMobileEmailCompany(String firstname, String middlename,String lastname,
+    public UserHelper userWithFullNameAdressMobileEmailCompany(String firstname, String middlename,String lastname,
                                                              String address,String mobile,String email,String company){
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
+        return new UserHelper(firstname, middlename, lastname, this.nickname, this.title,
                 company, address, this.home, mobile, this.work, this.fax,
                 email, this.email2, this.email3, this.homepage, this.byear);
     }

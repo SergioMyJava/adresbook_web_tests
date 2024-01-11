@@ -1,24 +1,18 @@
-import model.GroupData;
-import model.UserData;
+package manager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class TestBase {
+public class ApplicationManager {
     protected static WebDriver driver;
 
     @BeforeEach
     public void setUp() {
         if (driver == null) {
             driver = new ChromeDriver();
-            Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
-            driver.get("http://localhost/addressbook/");
-            driver.manage().window().setSize(new Dimension(968, 728));
-            driver.findElement(By.name("user")).sendKeys("admin");
-            driver.findElement(By.name("pass")).sendKeys("secret");
-            driver.findElement(By.xpath("//input[@value=\'Login\']")).click();
+            new LoginHelper(driver);
         }
-
     }
 
     protected boolean elementPresent(By locator) {
@@ -30,48 +24,48 @@ public class TestBase {
         }
     }
 
-    protected void createGroup(GroupData groupData) {
+    protected void createGroup(GroupHelper newGroup) {
         driver.findElement(By.name("new")).click();
         driver.findElement(By.name("group_name")).click();
-        driver.findElement(By.name("group_name")).sendKeys(groupData.name());
+        driver.findElement(By.name("group_name")).sendKeys(newGroup.name());
         driver.findElement(By.name("group_header")).click();
-        driver.findElement(By.name("group_header")).sendKeys(groupData.header());
+        driver.findElement(By.name("group_header")).sendKeys(newGroup.header());
         driver.findElement(By.name("group_footer")).click();
-        driver.findElement(By.name("group_footer")).sendKeys(groupData.footer());
+        driver.findElement(By.name("group_footer")).sendKeys(newGroup.footer());
         driver.findElement(By.name("submit")).click();
         driver.findElement(By.linkText("group page")).click();
     }
 
-    protected void createUserInAdressbook(UserData userData) {
+    protected void createUserInAdressbook(UserHelper newUser) {
         driver.findElement(By.name("firstname")).click();
-        driver.findElement(By.name("firstname")).sendKeys(userData.getFirstname());
+        driver.findElement(By.name("firstname")).sendKeys(newUser.getFirstname());
         driver.findElement(By.name("middlename")).click();
-        driver.findElement(By.name("middlename")).sendKeys(userData.getMiddlename());
+        driver.findElement(By.name("middlename")).sendKeys(newUser.getMiddlename());
         driver.findElement(By.name("lastname")).click();
-        driver.findElement(By.name("lastname")).sendKeys(userData.getLastname());
+        driver.findElement(By.name("lastname")).sendKeys(newUser.getLastname());
         driver.findElement(By.name("nickname")).click();
-        driver.findElement(By.name("nickname")).sendKeys(userData.getNickname());
+        driver.findElement(By.name("nickname")).sendKeys(newUser.getNickname());
         driver.findElement(By.name("title")).click();
-        driver.findElement(By.name("title")).sendKeys(userData.getTitle());
+        driver.findElement(By.name("title")).sendKeys(newUser.getTitle());
         driver.findElement(By.name("company")).click();
-        driver.findElement(By.name("company")).sendKeys(userData.getCompany());
+        driver.findElement(By.name("company")).sendKeys(newUser.getCompany());
         driver.findElement(By.name("address")).click();
-        driver.findElement(By.name("address")).sendKeys(userData.getAddress());
+        driver.findElement(By.name("address")).sendKeys(newUser.getAddress());
         driver.findElement(By.name("home")).click();
-        driver.findElement(By.name("home")).sendKeys(userData.getHome());
+        driver.findElement(By.name("home")).sendKeys(newUser.getHome());
         driver.findElement(By.name("mobile")).click();
-        driver.findElement(By.name("mobile")).sendKeys(userData.getMobile());
+        driver.findElement(By.name("mobile")).sendKeys(newUser.getMobile());
         driver.findElement(By.name("work")).click();
-        driver.findElement(By.name("work")).sendKeys(userData.getWork());
+        driver.findElement(By.name("work")).sendKeys(newUser.getWork());
         driver.findElement(By.name("fax")).click();
-        driver.findElement(By.name("fax")).sendKeys(userData.getFax());
+        driver.findElement(By.name("fax")).sendKeys(newUser.getFax());
         driver.findElement(By.name("email")).click();
         driver.findElement(By.cssSelector("body")).click();
-        driver.findElement(By.name("email")).sendKeys(userData.getEmail());
+        driver.findElement(By.name("email")).sendKeys(newUser.getEmail());
         driver.findElement(By.name("email2")).click();
-        driver.findElement(By.name("email2")).sendKeys(userData.getEmail2());
+        driver.findElement(By.name("email2")).sendKeys(newUser.getEmail2());
         driver.findElement(By.name("email3")).click();
-        driver.findElement(By.name("email3")).sendKeys(userData.getEmail3());
+        driver.findElement(By.name("email3")).sendKeys(newUser.getEmail3());
         driver.findElement(By.name("homepage")).click();
         driver.findElement(By.name("homepage")).sendKeys("Home page");
         driver.findElement(By.cssSelector("input:nth-child(75)")).click();
