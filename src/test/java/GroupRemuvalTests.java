@@ -10,7 +10,7 @@ public class GroupRemuvalTests extends TestBase {
         if (!isGroupPresent()) {
             createGroup(new GroupData("", "", ""));
         }
-        RemoveGroup();
+        removeGroup();
     }
 
 

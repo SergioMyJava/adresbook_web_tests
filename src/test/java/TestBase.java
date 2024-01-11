@@ -112,9 +112,14 @@ public class TestBase {
         return elementPresent(By.name("selected[]"));
     }
 
-    protected void RemoveGroup() {
+    protected void removeGroup() {
         driver.findElement(By.name("selected[]")).click();
         driver.findElement(By.name("delete")).click();
         driver.findElement(By.linkText("group page")).click();
+    }
+
+    protected void removeUser() {
+        driver.findElement(By.name("selected[]")).click();
+        driver.findElement(By.xpath("//input[@value='Delete']")).click();
     }
 }
