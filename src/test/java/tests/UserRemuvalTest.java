@@ -1,19 +1,20 @@
-import manager.ApplicationManager;
-import manager.UserHelper;
+package tests;
+
+import model.UserData;
 import org.junit.jupiter.api.Test;
 
-public class UserRemuvalTest extends ApplicationManager {
+public class UserRemuvalTest  extends TasteBase {
 
     @Test
     public void testDelete() {
-        if (!isUserPresent()) {
-            openAddNewPage();
-            createUserInAdressbook(new UserHelper("Ivan", "Ivanovich", "Ivanov", "Vana84",
+        if (!app.getUserHelper().isUserPresent()) {
+            app.getUserHelper().openAddNewPage();
+            app.getUserHelper().createUserInAdressbook(new UserData("Ivan", "Ivanovich", "Ivanov", "Vana84",
                     "putalo", "OOO Boberinvest", "Moscou, Staronaberegnaya 35", "",
                     "(800)345-54-56", "hard", "(800)345-54-56", "www.boberbest.com",
                     "www.boberbest.ru", "www.boberbest.es", "www.boberbest.ru", "Soloduha"));
         }
-        removeUser();
+        app.removeUser();
 
     }
 }
