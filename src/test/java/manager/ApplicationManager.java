@@ -61,11 +61,4 @@ public class ApplicationManager {
         }
     }
 
-
-    public void removeUser() {
-        driver.findElement(By.name("selected[]")).click();
-        driver.findElement(By.xpath("//input[@value='Delete']")).click();
-    }
-
-
 }

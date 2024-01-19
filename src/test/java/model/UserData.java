@@ -1,6 +1,5 @@
 package model;
 
-import manager.UserHelper;
 
 public class UserData {
     private final String firstname;
@@ -21,8 +20,8 @@ public class UserData {
     private final String byear;
 
     public UserData(String firstname, String middlename, String lastname, String nickname, String title,
-                      String company, String address, String home, String mobile, String work, String fax,
-                      String email, String email2, String email3, String homepage, String byear) {
+                    String company, String address, String home, String mobile, String work, String fax,
+                    String email, String email2, String email3, String homepage, String byear) {
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -41,9 +40,9 @@ public class UserData {
         this.byear = byear;
     }
 
-    public UserData(){
-        this("","","","","","","","","","",
-                "","","","","","");
+    public UserData() {
+        this("", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "");
     }
 
     public String getFirstname() {
@@ -111,23 +110,11 @@ public class UserData {
     }
 
     public UserData userWithFullNameAdressMobile(String firstname, String middlename, String lastname, String address,
-                                                   String mobile){
+                                                 String mobile) {
         return new UserData(firstname, middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
                 this.email, this.email2, this.email3, this.homepage, this.byear);
     }
 
-    public UserData userWithFullNameAdressMobileEmail(String firstname, String middlename,String lastname,
-                                                        String address,String mobile,String email){
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
-                this.company, address, this.home, mobile, this.work, this.fax,
-                email, this.email2, this.email3, this.homepage, this.byear);
-    }
-
-    public UserData userWithFullNameAdressMobileEmailCompany(String firstname, String middlename,String lastname,
-                                                               String address,String mobile,String email,String company){
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
-                company, address, this.home, mobile, this.work, this.fax,
-                email, this.email2, this.email3, this.homepage, this.byear);
-    }
 }
+

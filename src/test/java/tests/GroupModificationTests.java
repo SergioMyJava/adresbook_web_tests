@@ -3,16 +3,13 @@ package tests;
 import model.GroupData;
 import org.junit.jupiter.api.Test;
 
-
-public class GroupRemuvalTests extends TasteBase {
+public class GroupModificationTests extends TasteBase {
 
     @Test
-    public void canRemoveGroup() {
+    void canModifayGroup() {
         if (!app.getGroupHelper().isGroupPresent()) {
             app.getGroupHelper().createGroup(new GroupData("", "", ""));
         }
-        app.getGroupHelper().removeGroup();
+        app.getGroupHelper().modifyGroup(new GroupData().withName("ModifyName"));
     }
-
-
 }

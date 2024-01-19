@@ -3,7 +3,7 @@ package tests;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 
-public class UserRemuvalTest  extends TasteBase {
+public class UserRemuvalTest extends TasteBase {
 
     @Test
     public void testDelete() {
@@ -14,7 +14,6 @@ public class UserRemuvalTest  extends TasteBase {
                     "(800)345-54-56", "hard", "(800)345-54-56", "www.boberbest.com",
                     "www.boberbest.ru", "www.boberbest.es", "www.boberbest.ru", "Soloduha"));
         }
-        app.removeUser();
-
+        app.getUserHelper().removeUser();
     }
 }

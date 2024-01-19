@@ -9,15 +9,12 @@ public class GroupeCreationTests extends TasteBase {
 
     @Test
     public void createNewGroupe() {
-        app.getGroupHelper().openGroupsPage();
-
         app.getGroupHelper().createGroup(new GroupData("next_test_group", "Group header", "groupe footer"));
 
     }
 
     @Test
     public void createNewGroupeWithEmptyName() {
-        app.getGroupHelper().openGroupsPage();
         app.getGroupHelper().createGroup(new GroupData("", "", ""));
 
     }
@@ -31,8 +28,7 @@ public class GroupeCreationTests extends TasteBase {
 
     @Test
     public void createNewGroupeWithNameOnly() {
-        app.getGroupHelper().openGroupsPage();
-        GroupData emptyGroupe = new GroupData() ;
+        GroupData emptyGroupe = new GroupData();
         app.getGroupHelper().createGroup(new GroupData().withName("someName1"));
     }
 }

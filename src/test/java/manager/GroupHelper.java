@@ -10,6 +10,65 @@ public class GroupHelper {
         this.manager = manager;
     }
 
+    public void removeGroup() {
+        openGroupsPage();
+        selectGroup();
+        click(By.name("delete"));
+        returnToGroupsPage();
+    }
+
+    public void createGroup(GroupData newGroup) {
+        openGroupsPage();
+        initGroupeKreation();
+        fillGroupForm(newGroup);
+        click(By.name("submit"));
+        returnToGroupsPage();
+    }
+
+    public void modifyGroup(GroupData modifydGroup) {
+        openGroupsPage();
+        selectGroup();
+        initGroupModifikation();
+        fillGroupForm(modifydGroup);
+        submitGroupModifikation();
+        returnToGroupsPage();
+    }
+
+    private void fillGroupForm(GroupData group) {
+        type(By.name("group_name"), group.name());
+        type(By.name("group_header"), group.header());
+        type(By.name("group_footer"), group.footer());
+    }
+
+    private void type(By locator, String text) {
+        click(locator);
+        manager.driver.findElement(locator).clear();
+        manager.driver.findElement(locator).sendKeys(text);
+    }
+
+    private void initGroupeKreation() {
+        click(By.name("new"));
+    }
+
+
+    private void returnToGroupsPage() {
+        manager.driver.findElement(By.linkText("group page")).click();
+    }
+
+    private void submitGroupModifikation() {
+        manager.driver.findElement(By.xpath("//input[@value='Update']")).click();
+    }
+
+
+    private void initGroupModifikation() {
+        manager.driver.findElement(By.xpath("//input[@value='Edit group']")).click();
+    }
+
+    public void selectGroup() {
+        click(By.name("selected[]"));
+    }
+
+
     public void openGroupsPage() {
         if (!manager.elementPresent(By.name("new"))) {
             manager.driver.findElement(By.linkText("groups")).click();
@@ -20,60 +79,7 @@ public class GroupHelper {
         return manager.elementPresent(By.name("selected[]"));
     }
 
-    public void removeGroup() {
-        manager.driver.findElement(By.name("selected[]")).click();
-        manager.driver.findElement(By.name("delete")).click();
-        manager.driver.findElement(By.linkText("group page")).click();
+    private void click(By locator) {
+        manager.driver.findElement(locator).click();
     }
-
-    public void createGroup(GroupData newGroup) {
-        manager.driver.findElement(By.name("new")).click();
-        manager.driver.findElement(By.name("group_name")).click();
-        manager.driver.findElement(By.name("group_name")).sendKeys(newGroup.name());
-        manager.driver.findElement(By.name("group_header")).click();
-        manager.driver.findElement(By.name("group_header")).sendKeys(newGroup.header());
-        manager.driver.findElement(By.name("group_footer")).click();
-        manager.driver.findElement(By.name("group_footer")).sendKeys(newGroup.footer());
-        manager.driver.findElement(By.name("submit")).click();
-        manager.driver.findElement(By.linkText("group page")).click();
-    }
-
-
-//    private final String name;
-//    private final String header;
-//    private final String footer;
-//
-//    public GroupHelper(String name, String header, String footer) {
-//        this.name = name;
-//        this.header = header;
-//        this.footer = footer;
-//    }
-//
-//    public GroupHelper() {
-//        this("","","");
-//    }
-//
-//    public String name() {
-//        return name;
-//    }
-//
-//    public String header() {
-//        return header;
-//    }
-//
-//    public String footer() {
-//        return footer;
-//    }
-//
-//    public GroupHelper withName(String someName) {
-//        return new GroupHelper(someName, this.header,this.footer);
-//    }
-//
-//    public GroupHelper withHeader(String someHeader) {
-//        return new GroupHelper(this.name, someHeader,this.footer);
-//    }
-//
-//    public GroupHelper withFooter(String someFooter) {
-//        return new GroupHelper(this.name, this.header,someFooter);
-//    }
 }
