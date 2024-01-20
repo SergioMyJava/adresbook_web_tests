@@ -82,4 +82,9 @@ public class GroupHelper {
     private void click(By locator) {
         manager.driver.findElement(locator).click();
     }
+
+    public int getCount() {
+        openGroupsPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 }

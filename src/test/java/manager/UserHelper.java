@@ -3,6 +3,9 @@ package manager;
 
 import model.UserData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class UserHelper {
     private final ApplicationManager manager;
@@ -60,14 +63,10 @@ public class UserHelper {
 //        driver.findElement(By.linkText("home page")).click();
     }
 
-    public void openAddNewPage() {
-        if (!manager.elementPresent(By.name("add new"))) {
-            manager.driver.findElement(By.linkText("add new")).click();
-        }
-    }
-
-    public boolean isUserPresent() {
-        return manager.elementPresent(By.name("selected[]"));
+    public void modifyUser(UserData userWithFullNameAdressMobile) {
+        initUserModifikationFirstElement();
+        fillUserForm(userWithFullNameAdressMobile);
+        submitUserModifikation();
     }
 
     public void removeUser() {
@@ -75,18 +74,7 @@ public class UserHelper {
         manager.driver.findElement(By.xpath("//input[@value='Delete']")).click();
     }
 
-
-    public void modifyUser(UserData userWithFullNameAdressMobile) {
-        initUserModifikationFirstElement();
-        fillUserForm(userWithFullNameAdressMobile);
-        submitUserModifikation();
-    }
-
-    private void submitUserModifikation() {
-        manager.driver.findElement(By.xpath("//input[@value='Update']")).click();
-    }
-
-    private void fillUserForm(UserData user) {
+     private void fillUserForm(UserData user) {
         type(By.name("firstname"), user.getFirstname());
         type(By.name("middlename"), user.getMiddlename());
         type(By.name("address"), user.getAddress());
@@ -105,6 +93,22 @@ public class UserHelper {
 
     }
 
+    public int getCountUser() {
+        returnToHomePage();
+        List<WebElement> elements = manager.driver.findElements(By.xpath("//a[contains(@href,'edit.php?id=')]"));
+        return elements.size();
+    }
+
+
+    public boolean isUserPresent() {
+        return manager.elementPresent(By.name("selected[]"));
+    }
+
+    public void openAddNewPage() {
+        if (!manager.elementPresent(By.name("add new"))) {
+            manager.driver.findElement(By.linkText("add new")).click();
+        }
+    }
 
     private void type(By locator, String text) {
         click(locator);
@@ -115,4 +119,13 @@ public class UserHelper {
     private void click(By locator) {
         manager.driver.findElement(locator).click();
     }
+
+    private void submitUserModifikation() {
+        manager.driver.findElement(By.xpath("//input[@value='Update']")).click();
+    }
+
+    private void returnToHomePage() {
+        manager.driver.findElement(By.linkText("home")).click();
+    }
+
 }
