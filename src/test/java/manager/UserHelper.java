@@ -1,10 +1,12 @@
 package manager;
 
 
+import model.GroupData;
 import model.UserData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHelper {
@@ -15,6 +17,7 @@ public class UserHelper {
     }
 
     public void createUserInAdressbook(UserData newUser) {
+        openAddNewPage();
         manager.driver.findElement(By.name("firstname")).click();
         manager.driver.findElement(By.name("firstname")).sendKeys(newUser.getFirstname());
         manager.driver.findElement(By.name("middlename")).click();
@@ -69,12 +72,30 @@ public class UserHelper {
         submitUserModifikation();
     }
 
-    public void removeUser() {
+    public void removeUser(UserData user) {
         manager.driver.findElement(By.name("selected[]")).click();
         manager.driver.findElement(By.xpath("//input[@value='Delete']")).click();
     }
 
-     private void fillUserForm(UserData user) {
+//    public void removeAllUsers() {
+//        returnToHomePage();
+//        List<WebElement> checkboxes = manager.driver.findElements(By.xpath("//input[contains(@name,'selected[]')]"));
+//        for (var chekcbox : checkboxes) {
+//            chekcbox.click();
+//        }
+//        click(By.name("delete"));
+//    }
+
+    public void removeAllUser() {
+        List<WebElement> checkboxes = manager.driver.findElements(By.xpath("//input[contains(@name,'selected[]')]"));
+        for (var chekcbox : checkboxes) {
+            chekcbox.click();
+        }
+        click(By.xpath("//input[@value='Delete']"));
+        returnToHomePage();
+    }
+
+    private void fillUserForm(UserData user) {
         type(By.name("firstname"), user.getFirstname());
         type(By.name("middlename"), user.getMiddlename());
         type(By.name("address"), user.getAddress());
@@ -128,4 +149,17 @@ public class UserHelper {
         manager.driver.findElement(By.linkText("home")).click();
     }
 
+
+    public List<UserData> getList() {
+        returnToHomePage();
+        var users = new ArrayList<UserData>();
+        var spans = manager.driver.findElements(By.xpath("//tr[@name = 'entry']"));
+        for (var span : spans) {
+            var id = span.findElement(By.xpath("./td[1]/input")).getAttribute("id");
+            var lastname = span.findElement(By.xpath("./td[3]")).getText();
+            var firstname = span.findElement(By.xpath("./td[4]")).getText();
+            users.add(new UserData().withId(id).withName(firstname,lastname));
+        }
+        return users;
+    }
 }

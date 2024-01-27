@@ -2,6 +2,10 @@ package manager;
 
 import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupHelper {
     private final ApplicationManager manager;
@@ -10,11 +14,20 @@ public class GroupHelper {
         this.manager = manager;
     }
 
-    public void removeGroup() {
+    public void removeGroup(GroupData group) {
         openGroupsPage();
-        selectGroup();
+        selectGroup(group);
         click(By.name("delete"));
         returnToGroupsPage();
+    }
+
+    public void removeAllGroups() {
+        openGroupsPage();
+        List<WebElement> checkboxes = manager.driver.findElements(By.xpath("//input[contains(@name,'selected[]')]"));
+        for (var chekcbox : checkboxes) {
+            chekcbox.click();
+        }
+        click(By.name("delete"));
     }
 
     public void createGroup(GroupData newGroup) {
@@ -25,11 +38,11 @@ public class GroupHelper {
         returnToGroupsPage();
     }
 
-    public void modifyGroup(GroupData modifydGroup) {
+    public void modifyGroup(GroupData group, GroupData modifyName) {
         openGroupsPage();
-        selectGroup();
+        selectGroup(group);
         initGroupModifikation();
-        fillGroupForm(modifydGroup);
+        fillGroupForm(modifyName);
         submitGroupModifikation();
         returnToGroupsPage();
     }
@@ -64,8 +77,8 @@ public class GroupHelper {
         manager.driver.findElement(By.xpath("//input[@value='Edit group']")).click();
     }
 
-    public void selectGroup() {
-        click(By.name("selected[]"));
+    public void selectGroup(GroupData group) {
+                click(By.cssSelector(String.format("input[value='%s']", group.id())));
     }
 
 
@@ -75,10 +88,6 @@ public class GroupHelper {
         }
     }
 
-    public boolean isGroupPresent() {
-        return manager.elementPresent(By.name("selected[]"));
-    }
-
     private void click(By locator) {
         manager.driver.findElement(locator).click();
     }
@@ -86,5 +95,18 @@ public class GroupHelper {
     public int getCount() {
         openGroupsPage();
         return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public List<GroupData> getList() {
+        openGroupsPage();
+        var groups = new ArrayList<GroupData>();
+        var spans = manager.driver.findElements(By.xpath("//span[@class = 'group']"));
+        for (var span : spans) {
+            var name = span.getText();
+            var checkbox = span.findElement(By.name("selected[]"));
+            var id = checkbox.getAttribute("value");
+            groups.add(new GroupData().withId(id).withName(name));
+        }
+        return groups;
     }
 }
