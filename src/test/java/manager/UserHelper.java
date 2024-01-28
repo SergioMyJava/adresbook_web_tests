@@ -66,9 +66,9 @@ public class UserHelper {
 //        driver.findElement(By.linkText("home page")).click();
     }
 
-    public void modifyUser(UserData userWithFullNameAdressMobile) {
-        initUserModifikationFirstElement();
-        fillUserForm(userWithFullNameAdressMobile);
+    public void modifyUser(UserData user, UserData modifayUser) {
+        initUserModifikationById(Integer.parseInt(user.id()));
+        fillUserForm(modifayUser);
         submitUserModifikation();
     }
 
@@ -96,17 +96,24 @@ public class UserHelper {
     }
 
     private void fillUserForm(UserData user) {
+        type(By.name("lastname"), user.getLastname());
         type(By.name("firstname"), user.getFirstname());
         type(By.name("middlename"), user.getMiddlename());
         type(By.name("address"), user.getAddress());
         type(By.name("mobile"), user.getMobile());
     }
 
-    private void initUserModifikationById(int id) {
-        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id)));
+    private void fillUserFirstLastName(UserData user) {
+        type(By.name("firstname"), user.getFirstname());
+        type(By.name("lastname"), user.getLastname());
     }
 
-    private void initUserModifikationFirstElement() {
+    private void initUserModifikationById(int id) {
+        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id)));
+        manager.driver.findElement(By.xpath("//a[contains(@href,'edit.php?id=')]")).click();
+    }
+
+    private void initUserModifikationFirstElement(UserData user) {
         manager.driver.findElement(By.xpath("//a[contains(@href,'edit.php?id=')]")).click();
 
 //        List<WebElement> elements = manager.driver.findElements(By.xpath("//a[contains(@href,'edit.php?id=')]")); //код для клика по последнему элементу
@@ -156,10 +163,18 @@ public class UserHelper {
         var spans = manager.driver.findElements(By.xpath("//tr[@name = 'entry']"));
         for (var span : spans) {
             var id = span.findElement(By.xpath("./td[1]/input")).getAttribute("id");
-            var lastname = span.findElement(By.xpath("./td[3]")).getText();
-            var firstname = span.findElement(By.xpath("./td[4]")).getText();
-            users.add(new UserData().withId(id).withName(firstname,lastname));
+            var lastname = span.findElement(By.xpath("./td[2]")).getText();
+            var firstname = span.findElement(By.xpath("./td[3]")).getText();
+            var adress = span.findElement(By.xpath("./td[4]")).getText();
+            var mobile = span.findElement(By.xpath("./td[6]")).getText();
+            users.add(new UserData().userWithFullNameAdressMobile(firstname,lastname,adress,mobile).withId(id));
         }
         return users;
     }
+
+//    public int getIdByIndex(int id, List newUsersList){
+//        for(var user : newUsersList){
+//            if(user.findElement(By.xpath("./td[1]/input")).getAttribute("id")){}
+//        }
+//    }
 }

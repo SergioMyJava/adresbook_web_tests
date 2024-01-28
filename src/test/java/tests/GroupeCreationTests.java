@@ -6,22 +6,25 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 public class GroupeCreationTests extends TasteBase {
 
 
     public static List<GroupData> groupProvaider() {
         var result = new ArrayList<GroupData>();
-        for (var name : List.of("", "group name")) {
-            for (var header : List.of("", "group header")) {
-                for (var footer : List.of("", "group footer")) {
-                    result.add(new GroupData("", name, header, footer));
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++) {
+//        for (var name : List.of("fresh group name", "group name")) {
+//            for (var header : List.of("fresh group header", "fgroup header")) {
+//                for (var footer : List.of("fresh group footer", "group footer")) {
+//                    result.add(new GroupData()
+//                            .withHeader(header)
+//                            .withFooter(footer)
+//                            .withName(name));
+//                }
+//            }
+//        }
+        for (int i = 0; i < 2; i++) {
             result.add(new GroupData()
                     .withHeader(randomstring(i * 10))
                     .withFooter(randomstring(i * 10))
@@ -34,14 +37,18 @@ public class GroupeCreationTests extends TasteBase {
     @MethodSource("groupProvaider")
     public void createMultiplyGroupe(GroupData group) {
         var oldGroups = app.getGroupHelper().getList();
-        var rnd = new Random();
-        var index = rnd.nextInt(oldGroups.size());
-        //app.getGroupHelper().removeGroup(oldGroups.get(index));
-        var newGrous = app.getGroupHelper().getList();
-        var expectedList = new ArrayList<>(oldGroups);
         app.getGroupHelper().createGroup(group);
-        Assertions.assertEquals(newGrous, expectedList);
+        var newGroups = app.getGroupHelper().getList();
 
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var expectedList = new ArrayList<>(oldGroups);
+
+        expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id()).withHeader("").withFooter(""));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroups, expectedList);
     }
 
     public static List<GroupData> negativeGroupProvaider() {
@@ -53,10 +60,10 @@ public class GroupeCreationTests extends TasteBase {
     @ParameterizedTest
     @MethodSource("negativeGroupProvaider")
     public void canNotCreateGroupe(GroupData group) {
-        int countGroups = app.getGroupHelper().getCount();
+        var oldGroups = app.getGroupHelper().getList();
         app.getGroupHelper().createGroup(group);
-        int newCountGroups = app.getGroupHelper().getCount();
-        Assertions.assertEquals(countGroups, newCountGroups);
+        var newGroups = app.getGroupHelper().getList();
+        Assertions.assertEquals(newGroups, oldGroups);
 
     }
 }

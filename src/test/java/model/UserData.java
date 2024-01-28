@@ -1,6 +1,8 @@
 package model;
 
 
+import java.util.Objects;
+
 public class UserData {
     private final String firstname;
     private final String middlename;
@@ -18,10 +20,12 @@ public class UserData {
     private final String email3;
     private final String homepage;
     private final String byear;
+    private final String id;
 
-    public UserData(String firstname, String middlename, String lastname, String nickname, String title,
+    public UserData(String id, String firstname, String middlename, String lastname, String nickname, String title,
                     String company, String address, String home, String mobile, String work, String fax,
                     String email, String email2, String email3, String homepage, String byear) {
+        this.id = id;
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;
@@ -39,10 +43,31 @@ public class UserData {
         this.homepage = homepage;
         this.byear = byear;
     }
-
+    public UserData userWithFullNameAdressMobile(String firstname, String lastname,
+                                                 String address, String mobile) {
+        return new UserData("", firstname, this.middlename, lastname, this.nickname, this.title,
+                this.company, address, this.home, mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear);
+    }
     public UserData() {
-        this("", "", "", "", "", "", "", "", "", "",
+        this("", "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "");
+    }
+
+    public UserData withId(String id) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, address, this.home, mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear);
+    }
+
+    public UserData withName(String firstname,String lastname) {
+        return new UserData(this.id, firstname, this.middlename, lastname, this.nickname, this.title,
+                this.company, address, this.home, mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear);
+    }
+
+    public String id() {
+        return id;
     }
 
     public String getFirstname() {
@@ -109,12 +134,28 @@ public class UserData {
         return byear;
     }
 
-    public UserData userWithFullNameAdressMobile(String firstname, String middlename, String lastname, String address,
-                                                 String mobile) {
-        return new UserData(firstname, middlename, lastname, this.nickname, this.title,
-                this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear);
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", address='" + address + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", id='" + id + '\'' +
+                '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserData userData = (UserData) o;
+        return Objects.equals(firstname, userData.firstname) && Objects.equals(lastname, userData.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstname, middlename);
+    }
 }
 
