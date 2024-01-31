@@ -109,8 +109,7 @@ public class UserHelper {
     }
 
     private void initUserModifikationById(int id) {
-        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id)));
-        manager.driver.findElement(By.xpath("//a[contains(@href,'edit.php?id=')]")).click();
+        manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id))).click();
     }
 
     private void initUserModifikationFirstElement(UserData user) {
