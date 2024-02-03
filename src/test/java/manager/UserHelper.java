@@ -1,13 +1,16 @@
 package manager;
 
 
-import model.GroupData;
 import model.UserData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class UserHelper {
     private final ApplicationManager manager;
@@ -108,6 +111,15 @@ public class UserHelper {
         type(By.name("lastname"), user.getLastname());
     }
 
+    public void fillUserFirstLastNamePhoto(UserData user) {
+        openAddNewPage();
+        type(By.name("firstname"), user.getFirstname());
+        type(By.name("lastname"), user.getLastname());
+        attach(By.name("photo"), user.getPhoto());
+        click(By.xpath("//input[@value='Enter']"));
+
+    }
+
     private void initUserModifikationById(int id) {
         manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id))).click();
     }
@@ -126,11 +138,6 @@ public class UserHelper {
         return elements.size();
     }
 
-
-    public boolean isUserPresent() {
-        return manager.elementPresent(By.name("selected[]"));
-    }
-
     public void openAddNewPage() {
         if (!manager.elementPresent(By.name("add new"))) {
             manager.driver.findElement(By.linkText("add new")).click();
@@ -141,6 +148,10 @@ public class UserHelper {
         click(locator);
         manager.driver.findElement(locator).clear();
         manager.driver.findElement(locator).sendKeys(text);
+    }
+
+    private void attach(By locator, String file) {
+        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
     }
 
     private void click(By locator) {
@@ -166,7 +177,7 @@ public class UserHelper {
             var firstname = span.findElement(By.xpath("./td[3]")).getText();
             var adress = span.findElement(By.xpath("./td[4]")).getText();
             var mobile = span.findElement(By.xpath("./td[6]")).getText();
-            users.add(new UserData().userWithFullNameAdressMobile(firstname,lastname,adress,mobile).withId(id));
+            users.add(new UserData().userWithFullNameAdressMobile(firstname, lastname, adress, mobile).withId(id));
         }
         return users;
     }
@@ -176,4 +187,11 @@ public class UserHelper {
 //            if(user.findElement(By.xpath("./td[1]/input")).getAttribute("id")){}
 //        }
 //    }
+
+    public static String randomFile(String dir) {
+        var fileName = new File(dir).list();
+        var rnd = new Random();
+        var index = rnd.nextInt(fileName.length);
+        return Paths.get(dir, fileName[index]).toString();
+    }
 }

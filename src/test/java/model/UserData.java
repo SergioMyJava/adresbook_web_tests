@@ -21,10 +21,11 @@ public class UserData {
     private final String homepage;
     private final String byear;
     private final String id;
+    private final String photo;
 
     public UserData(String id, String firstname, String middlename, String lastname, String nickname, String title,
                     String company, String address, String home, String mobile, String work, String fax,
-                    String email, String email2, String email3, String homepage, String byear) {
+                    String email, String email2, String email3, String homepage, String byear,String photo) {
         this.id = id;
         this.firstname = firstname;
         this.middlename = middlename;
@@ -42,28 +43,35 @@ public class UserData {
         this.email3 = email3;
         this.homepage = homepage;
         this.byear = byear;
+        this.photo = photo;
     }
     public UserData userWithFullNameAdressMobile(String firstname, String lastname,
                                                  String address, String mobile) {
         return new UserData("", firstname, this.middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
     }
     public UserData() {
         this("", "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "");
+                "", "", "", "", "", "","");
     }
 
     public UserData withId(String id) {
         return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
     }
 
-    public UserData withName(String firstname,String lastname) {
+    public UserData withFirstnameLastname(String firstname,String lastname) {
         return new UserData(this.id, firstname, this.middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+    }
+
+    public UserData withPhoto(String photo) {
+        return new UserData(this.id, firstname, this.middlename, lastname, this.nickname, this.title,
+                this.company, address, this.home, mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, photo);
     }
 
     public String id() {
@@ -132,6 +140,10 @@ public class UserData {
 
     public String getByear() {
         return byear;
+    }
+
+    public String getPhoto() {
+        return photo;
     }
 
     @Override

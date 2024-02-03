@@ -52,6 +52,22 @@ public class GroupData {
         return new GroupData(id, this.name, this.header, this.footer);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public String getFooter() {
+        return footer;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "GroupData{" +

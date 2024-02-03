@@ -15,7 +15,7 @@ public class UserModificationTests extends TasteBase {
             app.getUserHelper().createUserInAdressbook(new UserData("", "",
                     "", "", "", "", "", "",
                     "", "", "","", "", "", "",
-                    "", ""));
+                    "", "",""));
         }
         var oldUsersList = app.getUserHelper().getList();
         var rnd = new Random();

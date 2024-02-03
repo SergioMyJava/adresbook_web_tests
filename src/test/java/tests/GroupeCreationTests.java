@@ -1,10 +1,17 @@
 package tests;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import common.CommonFunction;
 import model.GroupData;
+import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +19,7 @@ import java.util.List;
 public class GroupeCreationTests extends TasteBase {
 
 
-    public static List<GroupData> groupProvaider() {
+    public static List<GroupData> groupProvaider() throws IOException {
         var result = new ArrayList<GroupData>();
 //        for (var name : List.of("fresh group name", "group name")) {
 //            for (var header : List.of("fresh group header", "fgroup header")) {
@@ -24,12 +31,17 @@ public class GroupeCreationTests extends TasteBase {
 //                }
 //            }
 //        }
-        for (int i = 0; i < 2; i++) {
-            result.add(new GroupData()
-                    .withHeader(randomstring(i * 10))
-                    .withFooter(randomstring(i * 10))
-                    .withName(randomstring(i * 10)));
-        }
+//        for (int i = 0; i < 2; i++) {
+//            result.add(new GroupData()
+//                    .withHeader(CommonFunction.randomstring(i * 10))
+//                    .withFooter(CommonFunction.randomstring(i * 10))
+//                    .withName(CommonFunction.randomstring(i * 10)));
+//        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>() {
+        });
+        result.addAll(value);
         return result;
     }
 
@@ -46,14 +58,15 @@ public class GroupeCreationTests extends TasteBase {
         newGroups.sort(compareById);
         var expectedList = new ArrayList<>(oldGroups);
 
-        expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id()).withHeader("").withFooter(""));
+        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups, expectedList);
     }
 
     public static List<GroupData> negativeGroupProvaider() {
         var result = new ArrayList<GroupData>(List.of(
-                new GroupData("", "next_test_group'", "Group header", "groupe footer")));
+                new GroupData("", "next_test_group'",
+                        "Group header", "groupe footer")));
         return result;
     }
 
