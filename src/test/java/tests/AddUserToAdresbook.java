@@ -12,6 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -38,9 +40,9 @@ public class AddUserToAdresbook extends TasteBase {
 //                    CommonFunction.randomstring(i * 10), CommonFunction.randomstring(i * 10),
 //                    CommonFunction.randomstring(i * 10)));
 //        }
-
+        var json = Files.readString(Paths.get("contakts.json"));
         ObjectMapper mapper = new ObjectMapper();
-        var value = mapper.readValue(new File("contakts.json"), new TypeReference<List<UserData>>() {
+        var value = mapper.readValue(json, new TypeReference<List<UserData>>() {
         });
         result.addAll(value);
         return result;

@@ -12,6 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,10 +39,9 @@ public class GroupeCreationTests extends TasteBase {
 //                    .withFooter(CommonFunction.randomstring(i * 10))
 //                    .withName(CommonFunction.randomstring(i * 10)));
 //        }
-
+        var json = Files.readString(Paths.get("groups.json"));
         ObjectMapper mapper = new ObjectMapper();
-        var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>() {
-        });
+        var value = mapper.readValue(json, new TypeReference<List<GroupData>>() {});
         result.addAll(value);
         return result;
     }
