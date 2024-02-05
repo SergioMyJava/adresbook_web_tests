@@ -13,4 +13,8 @@ public class CommonFunction {
         }
         return result;
     }
+
+    public static int randomNumber(int n) {
+        return new Random().nextInt(n);
+    }
 }

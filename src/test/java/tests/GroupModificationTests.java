@@ -1,5 +1,6 @@
 package tests;
 
+import common.CommonFunction;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,12 +14,13 @@ public class GroupModificationTests extends TasteBase {
     @Test
     void canModifayGroup() {
         if (app.getGroupHelper().getCount() == 0) {
-            app.getGroupHelper().createGroup(new GroupData("", "", "", ""));
+            app.getGroupHelper().createGroup(new GroupData("", CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10), CommonFunction.randomstring(10)));
         }
         var oldGroups = app.getGroupHelper().getList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
-        var modifyGroup = new GroupData().withName("ModifyName");
+        var modifyGroup = new GroupData().withName(CommonFunction.randomstring(10));
         app.getGroupHelper().modifyGroup(oldGroups.get(index), modifyGroup);
         var newGroups = app.getGroupHelper().getList();
         var expectedList = new ArrayList<>(oldGroups);

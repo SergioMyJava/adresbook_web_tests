@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.CommonFunction;
 import model.UserData;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static manager.UserHelper.randomFile;
 
 public class AddUserToAdresbook extends TasteBase {
 
@@ -51,7 +48,7 @@ public class AddUserToAdresbook extends TasteBase {
 
     @ParameterizedTest
     @MethodSource("userProvaider")
-    public void createMultiplyGroupe(UserData user) throws InterruptedException {
+    public void createMultiplyUsers(UserData user) throws InterruptedException {
         var oldUsersList = app.getUserHelper().getList();
         app.getUserHelper().createUserInAdressbook(user);
         Thread.sleep(3000);
@@ -64,7 +61,7 @@ public class AddUserToAdresbook extends TasteBase {
 
         var expectedList = new ArrayList<>(oldUsersList);
 
-        expectedList.add(user.withId(newUsersList.get(newUsersList.size()-1).id()).
+        expectedList.add(user.withId(newUsersList.get(newUsersList.size() - 1).id()).
                 withFirstnameLastname(user.getFirstname(), user.getLastname()));
 
         expectedList.sort(compareById);
@@ -76,30 +73,27 @@ public class AddUserToAdresbook extends TasteBase {
     public void newUserAlmoustInformation() {
         var oldUsersList = app.getUserHelper().getList();
         app.getUserHelper().openAddNewPage();
-        var newUser = new UserData("", "Ivan", "Ivanovich", "Ivanov", "Vana84",
-                "putalo", "OOO Boberinvest", "Moscou, Staronaberegnaya 35", "",
-                "(800)345-54-56", "hard", "(800)345-54-56", "www.boberbest.com",
-                "www.boberbest.ru", "www.boberbest.es", "www.boberbest.ru", "Soloduha","");
+        var newUser = new UserData("", CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10) + " " + CommonFunction.randomNumber(10), "",
+                CommonFunction.randomNumber(10) + " " + CommonFunction.randomNumber(10),
+                CommonFunction.randomstring(10), CommonFunction.randomNumber(10) + " "
+                + CommonFunction.randomNumber(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10), "");
         app.getUserHelper().createUserInAdressbook(newUser);
         var newUsersList = app.getUserHelper().getList();
-        oldUsersList.add(newUser.withId(newUsersList.get(newUsersList.size()-1).id()));
+        oldUsersList.add(newUser.withId(newUsersList.get(newUsersList.size() - 1).id()));
         Assertions.assertEquals(newUsersList, oldUsersList);
     }
 
     @Test
     public void newUserWithFirstNameLastnamePhoto() {
-//        var oldUsersList = app.getUserHelper().getList();
         app.getUserHelper().openAddNewPage();
-        var newUser = new UserData().withFirstnameLastname(CommonFunction.randomstring(10), CommonFunction.randomstring(10))
-                .withPhoto(randomFile("src/test/resources/images"));
+        var newUser = new UserData().withFirstnameLastname(
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10));
         app.getUserHelper().fillUserFirstLastNamePhoto(newUser);
-
-
-
-//        app.getUserHelper().createUserInAdressbook(newUser);
-//        var newUsersList = app.getUserHelper().getList();
-//        oldUsersList.add(newUser.withId(newUsersList.get(newUsersList.size()-1).id()));
-//        Assertions.assertEquals(newUsersList, oldUsersList);
     }
 }
 

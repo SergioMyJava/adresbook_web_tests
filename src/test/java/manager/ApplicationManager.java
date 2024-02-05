@@ -5,14 +5,18 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.Properties;
+
 public class ApplicationManager {
     private LogHelper session;
     private GroupHelper group;
     public UserHelper user;
     protected WebDriver driver;
+    private Properties properties;
 
     @BeforeEach
-    public void init(String browser) {
+    public void init(String browser, Properties properties) {
+        this.properties = properties;
         if (driver == null) {
             if ("firefox".equals(browser)) {
                 driver = new FirefoxDriver();
@@ -24,10 +28,12 @@ public class ApplicationManager {
                     throw new IllegalArgumentException(String.format("Unknown browser %s", browser));
                 }
             }
+
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
-            driver.get("http://localhost/addressbook/");
+            driver.get(properties.getProperty("web.braserurl"));
             driver.manage().window().setSize(new Dimension(968, 728));
-            session().login("admin", "secret");
+            session().login(properties.getProperty("war.username"), properties.getProperty("war.password"));
+
         }
     }
 

@@ -1,5 +1,6 @@
 package tests;
 
+import common.CommonFunction;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,21 +8,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
+import static manager.UserHelper.randomFile;
+
 public class UserModificationTests extends TasteBase {
 
     @Test
     void canModifayUser() throws InterruptedException {
         if (app.getUserHelper().getCountUser() == 0) {
-            app.getUserHelper().createUserInAdressbook(new UserData("", "",
-                    "", "", "", "", "", "",
-                    "", "", "","", "", "", "",
-                    "", "",""));
+            app.getUserHelper().createUserInAdressbook(new UserData().withFirstnameLastname(
+                    CommonFunction.randomstring(10), CommonFunction.randomstring(10))
+                    .withPhoto(randomFile("src/test/resources/images")));
         }
         var oldUsersList = app.getUserHelper().getList();
         var rnd = new Random();
         var index = rnd.nextInt(oldUsersList.size());
-        var modifayUser = new UserData().userWithFullNameAdressMobile("Lavon",
-                "Volsky","s.Baukov","+900-345-567");
+        var modifayUser = new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10),CommonFunction.randomstring(10)
+                ,CommonFunction.randomNumber(10) + " " + CommonFunction.randomNumber(10));
+
         app.getUserHelper().modifyUser(oldUsersList.get(index),modifayUser);
         Thread.sleep(3000);
         var newUsersList = app.getUserHelper().getList();
