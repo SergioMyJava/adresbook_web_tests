@@ -13,6 +13,7 @@ public class ApplicationManager {
     public UserHelper user;
     protected WebDriver driver;
     private Properties properties;
+    private JdbsHelper jdbs;
 
     @BeforeEach
     public void init(String browser, Properties properties) {
@@ -56,6 +57,14 @@ public class ApplicationManager {
             user = new UserHelper(this);
         }
         return user;
+    }
+
+
+    public JdbsHelper getJdbsHelper() {
+        if (jdbs == null) {
+            jdbs = new JdbsHelper(this);
+        }
+        return jdbs;
     }
 
     public boolean elementPresent(By locator) {
