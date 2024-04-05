@@ -45,9 +45,11 @@ public class GroupeCreationTests extends TasteBase {
         return result;
     }
 
+
+
     @ParameterizedTest
     @MethodSource("groupProvaider")
-    public void createMultiplyGroupe(GroupData group) {
+    public void createMultiplyGroupeInInterface(GroupData group) {
         var oldGroups = app.getGroupHelper().getList();
         app.getGroupHelper().createGroup(group);
         var newGroups = app.getGroupHelper().getList();
@@ -56,27 +58,80 @@ public class GroupeCreationTests extends TasteBase {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newGroups.sort(compareById);
+        var maxID = newGroups.get(newGroups.size() - 1).id();
         var expectedList = new ArrayList<>(oldGroups);
 
-        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.add(group.withId(maxID).withHeader("").withFooter(""));
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups, expectedList);
     }
 
     public static List<GroupData> negativeGroupProvaider() {
         var result = new ArrayList<GroupData>(List.of(
-                new GroupData("", CommonFunction.randomstring(10),
-                        CommonFunction.randomstring(10), CommonFunction.randomstring(10))));
+                new GroupData(""
+                        , CommonFunction.randomstring(10)
+                        ,CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10))));
         return result;
     }
 
     @ParameterizedTest
     @MethodSource("negativeGroupProvaider")
     public void canNotCreateGroupe(GroupData group) {
-        var oldGroups = app.getGroupHelper().getList();
+        var oldGroups = app.getJdbsHelper().getGroupeList();
         app.getGroupHelper().createGroup(group);
-        var newGroups = app.getGroupHelper().getList();
+        var newGroups = app.getJdbsHelper().getGroupeList();
         Assertions.assertEquals(newGroups, oldGroups);
 
     }
+
+    public static List<GroupData> groupProvaiderForOne() throws IOException {
+        var result = new ArrayList<GroupData>(List.of(
+                new GroupData(""
+                        , CommonFunction.randomstring(10)
+                        ,CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10))));
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("groupProvaiderForOne")
+    public void createOneGroupeFromSQL(GroupData group) {
+        var oldGroups = app.getJdbsHelper().getGroupeList();
+        app.getGroupHelper().createGroup(group);
+        var newGroups = app.getJdbsHelper().getGroupeList();
+
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var maxID = newGroups.get(newGroups.size() - 1).id();
+        var expectedList = new ArrayList<>(oldGroups);
+
+        expectedList.add(group.withId(maxID));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroups, expectedList);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("groupProvaiderForOne")
+    public void createOneGroupeFromHibernate(GroupData group) {
+        var oldGroups = app.hmb().getGroupList();
+        app.getGroupHelper().createGroup(group);
+        var newGroups = app.hmb().getGroupList();
+
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var maxID = newGroups.get(newGroups.size() - 1).id();
+        var expectedList = new ArrayList<>(oldGroups);
+
+        expectedList.add(group.withId(maxID));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroups, expectedList);
+
+    }
+
 }

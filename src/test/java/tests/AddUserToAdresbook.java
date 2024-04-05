@@ -3,6 +3,7 @@ package tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.CommonFunction;
+import model.GroupData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -49,10 +50,10 @@ public class AddUserToAdresbook extends TasteBase {
     @ParameterizedTest
     @MethodSource("userProvaider")
     public void createMultiplyUsers(UserData user) throws InterruptedException {
-        var oldUsersList = app.getUserHelper().getList();
+        var oldUsersList = app.getJdbsHelper().getUserList();
         app.getUserHelper().createUserInAdressbook(user);
         Thread.sleep(3000);
-        var newUsersList = app.getUserHelper().getList();
+        var newUsersList = app.getJdbsHelper().getUserList();
 
         Comparator<UserData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
@@ -61,7 +62,8 @@ public class AddUserToAdresbook extends TasteBase {
 
         var expectedList = new ArrayList<>(oldUsersList);
 
-        expectedList.add(user.withId(newUsersList.get(newUsersList.size() - 1).id()).
+        var maxID = newUsersList.get(newUsersList.size() - 1).id();
+        expectedList.add(user.withId(maxID).
                 withFirstnameLastname(user.getFirstname(), user.getLastname()));
 
         expectedList.sort(compareById);
@@ -71,7 +73,7 @@ public class AddUserToAdresbook extends TasteBase {
 
     @Test
     public void newUserAlmoustInformation() {
-        var oldUsersList = app.getUserHelper().getList();
+        var oldUsersList = app.getJdbsHelper().getUserList();
         app.getUserHelper().openAddNewPage();
         var newUser = new UserData("", CommonFunction.randomstring(10), CommonFunction.randomstring(10),
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10),
@@ -83,7 +85,7 @@ public class AddUserToAdresbook extends TasteBase {
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10),
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10), "");
         app.getUserHelper().createUserInAdressbook(newUser);
-        var newUsersList = app.getUserHelper().getList();
+        var newUsersList = app.getJdbsHelper().getUserList();
         oldUsersList.add(newUser.withId(newUsersList.get(newUsersList.size() - 1).id()));
         Assertions.assertEquals(newUsersList, oldUsersList);
     }
@@ -94,6 +96,63 @@ public class AddUserToAdresbook extends TasteBase {
         var newUser = new UserData().withFirstnameLastname(
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10));
         app.getUserHelper().fillUserFirstLastNamePhoto(newUser);
+    }
+
+
+    public static List<UserData> oneUser() throws IOException {
+        var result = new ArrayList<UserData>(List.of(
+                new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10), CommonFunction.randomstring( 10),
+                    CommonFunction.randomstring( 10))));
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("oneUser")
+    public void newUserWithSQL(UserData user) {
+        var oldUsersList = app.getJdbsHelper().getUserList();
+        app.getUserHelper().openAddNewPage();
+        app.getUserHelper().createUserInAdressbook(user);
+
+        var newUsersList = app.getJdbsHelper().getUserList();
+
+        Comparator<UserData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newUsersList.sort(compareById);
+
+        var expectedList = new ArrayList<>(oldUsersList);
+        var maxID = newUsersList.get(newUsersList.size() - 1).id();
+        expectedList.add(user.withId(maxID));//.withFirstnameLastname(user.getFirstname(), user.getLastname())
+
+        expectedList.sort(compareById);
+
+        Assertions.assertEquals(newUsersList, expectedList);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("oneUser")
+    public void newUserWithHibernate(UserData user) {
+        var oldUsersList = app.hmb().getUserList();
+        app.getUserHelper().openAddNewPage();
+        app.getUserHelper().createUserInAdressbook(user);
+
+        var newUsersList = app.hmb().getUserList();
+
+        Comparator<UserData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newUsersList.sort(compareById);
+
+        var expectedList = new ArrayList<>(oldUsersList);
+        var maxID = newUsersList.get(newUsersList.size() - 1).id();
+        expectedList.add(user.withId(maxID));//.withFirstnameLastname(user.getFirstname(), user.getLastname())
+
+        expectedList.sort(compareById);
+
+        Assertions.assertEquals(newUsersList, expectedList);
+
     }
 }
 

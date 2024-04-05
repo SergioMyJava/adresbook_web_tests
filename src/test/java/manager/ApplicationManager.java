@@ -14,6 +14,7 @@ public class ApplicationManager {
     protected WebDriver driver;
     private Properties properties;
     private JdbsHelper jdbs;
+    private HibernateHalper hmb;
 
     @BeforeEach
     public void init(String browser, Properties properties) {
@@ -65,6 +66,13 @@ public class ApplicationManager {
             jdbs = new JdbsHelper(this);
         }
         return jdbs;
+    }
+
+    public HibernateHalper hmb() {
+        if (hmb == null) {
+            hmb = new HibernateHalper(this);
+        }
+        return hmb;
     }
 
     public boolean elementPresent(By locator) {

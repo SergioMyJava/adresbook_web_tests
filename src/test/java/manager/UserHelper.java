@@ -80,15 +80,6 @@ public class UserHelper {
         manager.driver.findElement(By.xpath("//input[@value='Delete']")).click();
     }
 
-//    public void removeAllUsers() {
-//        returnToHomePage();
-//        List<WebElement> checkboxes = manager.driver.findElements(By.xpath("//input[contains(@name,'selected[]')]"));
-//        for (var chekcbox : checkboxes) {
-//            chekcbox.click();
-//        }
-//        click(By.name("delete"));
-//    }
-
     public void removeAllUser() {
         List<WebElement> checkboxes = manager.driver.findElements(By.xpath("//input[contains(@name,'selected[]')]"));
         for (var chekcbox : checkboxes) {

@@ -14,15 +14,17 @@ public class GroupModificationTests extends TasteBase {
     @Test
     void canModifayGroup() {
         if (app.getGroupHelper().getCount() == 0) {
-            app.getGroupHelper().createGroup(new GroupData("", CommonFunction.randomstring(10),
-                    CommonFunction.randomstring(10), CommonFunction.randomstring(10)));
+            app.getGroupHelper().createGroup(new GroupData(""
+                    ,CommonFunction.randomstring(10)
+                    ,CommonFunction.randomstring(10)
+                    ,CommonFunction.randomstring(10)));
         }
-        var oldGroups = app.getGroupHelper().getList();
+        var oldGroups = app.getJdbsHelper().getGroupeList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         var modifyGroup = new GroupData().withName(CommonFunction.randomstring(10));
         app.getGroupHelper().modifyGroup(oldGroups.get(index), modifyGroup);
-        var newGroups = app.getGroupHelper().getList();
+        var newGroups = app.getJdbsHelper().getGroupeList();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.set(index,modifyGroup.withId(oldGroups.get(index).id()));
         Comparator<GroupData> compareById = (o1, o2) -> {

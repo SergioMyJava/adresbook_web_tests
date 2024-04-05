@@ -19,7 +19,7 @@ public class UserModificationTests extends TasteBase {
                     CommonFunction.randomstring(10), CommonFunction.randomstring(10))
                     .withPhoto(randomFile("src/test/resources/images")));
         }
-        var oldUsersList = app.getUserHelper().getList();
+        var oldUsersList = app.getJdbsHelper().getUserList();
         var rnd = new Random();
         var index = rnd.nextInt(oldUsersList.size());
         var modifayUser = new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
@@ -28,7 +28,7 @@ public class UserModificationTests extends TasteBase {
 
         app.getUserHelper().modifyUser(oldUsersList.get(index),modifayUser);
         Thread.sleep(3000);
-        var newUsersList = app.getUserHelper().getList();
+        var newUsersList = app.getJdbsHelper().getUserList();
         var expectedList = new ArrayList<>(oldUsersList);
 
         expectedList.set(index,modifayUser.withId(oldUsersList.get(index).id()));

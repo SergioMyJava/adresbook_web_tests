@@ -45,6 +45,16 @@ public class UserData {
         this.byear = byear;
         this.photo = photo;
     }
+
+
+
+    public UserData UserDataFestLastMidlMob(String id, String firstname, String middlename, String lastname, String mobile){
+        return new UserData(id, firstname, middlename, lastname, mobile, this.nickname, this.title,
+                this.company, this.address, this.home, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+    }
+
+
     public UserData userWithFullNameAdressMobile(String firstname, String lastname,
                                                  String address, String mobile) {
         return new UserData("", firstname, this.middlename, lastname, this.nickname, this.title,
