@@ -21,22 +21,6 @@ public class GroupeCreationTests extends TasteBase {
 
     public static List<GroupData> groupProvaider() throws IOException {
         var result = new ArrayList<GroupData>();
-//        for (var name : List.of("fresh group name", "group name")) {
-//            for (var header : List.of("fresh group header", "fgroup header")) {
-//                for (var footer : List.of("fresh group footer", "group footer")) {
-//                    result.add(new GroupData()
-//                            .withHeader(header)
-//                            .withFooter(footer)
-//                            .withName(name));
-//                }
-//            }
-//        }
-//        for (int i = 0; i < 2; i++) {
-//            result.add(new GroupData()
-//                    .withHeader(CommonFunction.randomstring(i * 10))
-//                    .withFooter(CommonFunction.randomstring(i * 10))
-//                    .withName(CommonFunction.randomstring(i * 10)));
-//        }
         var json = Files.readString(Paths.get("groups.json"));
         ObjectMapper mapper = new ObjectMapper();
         var value = mapper.readValue(json, new TypeReference<List<GroupData>>() {
@@ -44,7 +28,6 @@ public class GroupeCreationTests extends TasteBase {
         result.addAll(value);
         return result;
     }
-
 
 
     @ParameterizedTest
@@ -70,7 +53,7 @@ public class GroupeCreationTests extends TasteBase {
         var result = new ArrayList<GroupData>(List.of(
                 new GroupData(""
                         , CommonFunction.randomstring(10)
-                        ,CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10)
                         , CommonFunction.randomstring(10))));
         return result;
     }
@@ -89,7 +72,7 @@ public class GroupeCreationTests extends TasteBase {
         var result = new ArrayList<GroupData>(List.of(
                 new GroupData(""
                         , CommonFunction.randomstring(10)
-                        ,CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10)
                         , CommonFunction.randomstring(10))));
         return result;
     }
@@ -118,7 +101,7 @@ public class GroupeCreationTests extends TasteBase {
     @MethodSource("groupProvaiderForOne")
     public void createOneGroupeFromHibernate(GroupData group) {
         var oldGroups = app.hmb().getGroupList();
-        app.getGroupHelper().createGroup(group);
+        app.hmb().createGroup(group);
         var newGroups = app.hmb().getGroupList();
 
         Comparator<GroupData> compareById = (o1, o2) -> {

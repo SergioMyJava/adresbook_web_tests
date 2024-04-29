@@ -1,12 +1,13 @@
 package manager;
 
 
+import model.GroupData;
 import model.UserData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,20 +54,11 @@ public class UserHelper {
         manager.driver.findElement(By.name("homepage")).click();
         manager.driver.findElement(By.name("homepage")).sendKeys("Home page");
         manager.driver.findElement(By.cssSelector("input:nth-child(75)")).click();
+    }
 
-//        {
-//            WebElement dropdown = driver.findElement(By.name("bday"));
-//            dropdown.findElement(By.xpath("//option[. = '1']")).click();
-//        }
-//        driver.findElement(By.name("bmonth")).click();
-//        {
-//            WebElement dropdown = driver.findElement(By.name("bmonth"));
-//            dropdown.findElement(By.xpath("//option[. = 'January']")).click();
-//        }
-//        driver.findElement(By.name("byear")).click();
-//        driver.findElement(By.name("byear")).sendKeys("1990");
-//        driver.findElement(By.cssSelector("input:nth-child(75)")).click();
-//        driver.findElement(By.linkText("home page")).click();
+    public void createUserWithGroup(UserData user,GroupData group) {
+        openAddNewPage();
+        fillUserFormWithGroup(user,group);
     }
 
     public void modifyUser(UserData user, UserData modifayUser) {
@@ -95,6 +87,20 @@ public class UserHelper {
         type(By.name("middlename"), user.getMiddlename());
         type(By.name("address"), user.getAddress());
         type(By.name("mobile"), user.getMobile());
+    }
+
+    //////////////////
+    private void fillUserFormWithGroup(UserData user, GroupData group) {
+        openAddNewPage();
+        fillUserForm(user);
+        selectGroup(group);
+        submitUserModifikation();
+        returnToHomePage();
+
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 
     private void fillUserFirstLastName(UserData user) {
@@ -150,7 +156,7 @@ public class UserHelper {
     }
 
     private void submitUserModifikation() {
-        manager.driver.findElement(By.xpath("//input[@value='Update']")).click();
+        manager.driver.findElement(By.xpath("//input[@type='submit']")).click();
     }
 
     private void returnToHomePage() {
@@ -172,12 +178,6 @@ public class UserHelper {
         }
         return users;
     }
-
-//    public int getIdByIndex(int id, List newUsersList){
-//        for(var user : newUsersList){
-//            if(user.findElement(By.xpath("./td[1]/input")).getAttribute("id")){}
-//        }
-//    }
 
     public static String randomFile(String dir) {
         var fileName = new File(dir).list();

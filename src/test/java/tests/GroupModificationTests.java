@@ -13,7 +13,7 @@ public class GroupModificationTests extends TasteBase {
 
     @Test
     void canModifayGroup() {
-        if (app.getGroupHelper().getCount() == 0) {
+        if (app.hmb().getGroupCount() == 0) {
             app.getGroupHelper().createGroup(new GroupData(""
                     ,CommonFunction.randomstring(10)
                     ,CommonFunction.randomstring(10)

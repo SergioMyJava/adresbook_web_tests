@@ -1,6 +1,7 @@
 package tests;
 
 import manager.ApplicationManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.FileReader;
@@ -20,6 +21,11 @@ public class TasteBase {
         properties.load(new FileReader(System.getProperty("target", "local.properties")));
 
         app.init(System.getProperty("browser", "chrome"),properties);
+    }
+
+    @AfterEach
+    public void checkDataBaseConsistency(){
+        app.getJdbsHelper().checkConsistency();
     }
 
 }

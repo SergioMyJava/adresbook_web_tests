@@ -14,7 +14,7 @@ public class UserRemuvalTest extends TasteBase {
 
     @Test
     public void testDelete() throws InterruptedException {
-        if (app.getJdbsHelper().getUserList().size() == 0) {
+        if (app.hmb().getUserCount() == 0) {
             app.getUserHelper().openAddNewPage();
             app.getUserHelper().createUserInAdressbook(new UserData().withFirstnameLastname(
                     CommonFunction.randomstring(10), CommonFunction.randomstring(10)));
@@ -32,7 +32,7 @@ public class UserRemuvalTest extends TasteBase {
 
     @Test
     public void testDeleteAllUsers() throws InterruptedException {
-        if (app.getJdbsHelper().getUserList().size() == 0) {
+        if (app.hmb().getUserCount() == 0) {
             app.getUserHelper().openAddNewPage();
             app.getUserHelper().createUserInAdressbook(new UserData().withFirstnameLastname(
                     CommonFunction.randomstring(10), CommonFunction.randomstring(10))
@@ -52,6 +52,7 @@ public class UserRemuvalTest extends TasteBase {
                     CommonFunction.randomstring(10),
                     CommonFunction.randomstring(10),
                     CommonFunction.randomstring(10)));
+                    Thread.sleep(1000);
         }
 
         var oldUserList = app.hmb().getUserList();

@@ -14,7 +14,7 @@ public class UserModificationTests extends TasteBase {
 
     @Test
     void canModifayUser() throws InterruptedException {
-        if (app.getUserHelper().getCountUser() == 0) {
+        if (app.hmb().getUserCount() == 0) {
             app.getUserHelper().createUserInAdressbook(new UserData().withFirstnameLastname(
                     CommonFunction.randomstring(10), CommonFunction.randomstring(10))
                     .withPhoto(randomFile("src/test/resources/images")));

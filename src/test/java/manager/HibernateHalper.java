@@ -10,8 +10,9 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class HibernateHalper extends HelperBase{
+public class HibernateHalper extends HelperBase {
     private SessionFactory sessionFactory;
 
 
@@ -19,65 +20,69 @@ public class HibernateHalper extends HelperBase{
         super(manager);
 
 
-    sessionFactory = new Configuration()
-                    //.addAnnotatedClass(Book.class)
-                    .addAnnotatedClass(GroupRecord.class)
-            .addAnnotatedClass(UserRecord.class)
-                    .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
-                    .setProperty(AvailableSettings.USER, "root")
-                    .setProperty(AvailableSettings.PASS, "")
-            .setProperty("hibernate.show_sql","true")
-            .setProperty("hibernate.format_sql","true")
-                    .buildSessionFactory();
+        sessionFactory = new Configuration()
+                .addAnnotatedClass(UserRecord.class)
+                .addAnnotatedClass(GroupRecord.class)
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                .setProperty(AvailableSettings.USER, "root")
+                .setProperty(AvailableSettings.PASS, "")
+                .setProperty("hibernate.show_sql", "true")
+                .setProperty("hibernate.format_sql", "true")
+                .buildSessionFactory();
     }
 
-    static List<GroupData> groupConvertList(List<GroupRecord> records){
+
+    ////GROUP
+    static List<GroupData> groupConvertList(List<GroupRecord> records) {
         List<GroupData> result = new ArrayList<>();
-        for(var record : records){
+        for (var record : records) {
             result.add(convertGroupRec(record));
         }
         return result;
     }
+
 
     private static GroupData convertGroupRec(GroupRecord record) {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }
 
     private static GroupRecord convertGroupRec(GroupData data) {
-        var id = data.id() ;
-        if(id.equals("")){
-            id="0";
+        var id = data.id();
+        if (id.equals("")) {
+            id = "0";
         }
-        return new GroupRecord(Integer.parseInt(id) , data.name(), data.header(), data.footer());
+        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
 
-    public List<GroupData> getGroupList(){
+    public List<GroupData> getGroupList() {
         return groupConvertList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();//
         }));
     }
 
-    static List<UserData> userConvertList(List<UserRecord> records){
+
+    ////USER
+    static List<UserData> userConvertList(List<UserRecord> records) {
         List<UserData> result = new ArrayList<>();
-        for(var record : records){
+        for (var record : records) {
             result.add(convertUserRec(record));
         }
         return result;
     }
 
-    private static UserData convertUserRec(UserRecord record) {
+    public static UserData convertUserRec(UserRecord record) {
         return new UserData().UserDataFestLastMidlMob("" + record.id, record.firstname, record.middlename, record.lastname, record.mobile);
     }
 
-    private static UserRecord convertUserRec(UserData data) {
-        var id = data.id() ;
-        if(id.equals("")){
-            id="0";
+    public static UserRecord convertUserRec(UserData data) {
+        var id = data.id();
+        if (id.equals("")) {
+            id = "0";
         }
-        return new UserRecord(Integer.parseInt(id) , data.getFirstname(), data.getMiddlename(), data.getLastname(), data.getMobile());
+        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getMiddlename(), data.getLastname(), data.getMobile());
     }
 
-    public List<UserData> getUserList(){
+    public List<UserData> getUserList() {
         return userConvertList(sessionFactory.fromSession(session -> {
             return session.createQuery("from UserRecord", UserRecord.class).list();
         }));
@@ -92,7 +97,7 @@ public class HibernateHalper extends HelperBase{
     public void createGroup(GroupData groupData) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
-           session.persist(convertGroupRec(groupData));
+            session.persist(convertGroupRec(groupData));
             session.getTransaction().commit();
         });
     }
@@ -111,4 +116,30 @@ public class HibernateHalper extends HelperBase{
         });
     }
 
+    private static UserData convert(UserRecord record) {
+        return new UserData().UserDataFestLastMidlMob("" + record.id, record.firstname, record.middlename, record.lastname, record.mobile);
+    }
+
+    private static UserRecord convert(UserData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getLastname(), data.getMiddlename(), data.getMobile());
+    }
+
+
+    static List<UserData> convertContactList(List<UserRecord> records) {
+        return records.stream().map(HibernateHalper::convert).collect(Collectors.toList());
+    }
+
+    public List<UserData> getUsersInGroup(GroupData group) {
+        return sessionFactory.fromSession(session -> {
+            return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
+        });
+    }
 }
+
+
+
+

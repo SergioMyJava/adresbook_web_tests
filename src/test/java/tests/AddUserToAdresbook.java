@@ -23,21 +23,6 @@ public class AddUserToAdresbook extends TasteBase {
 
     public static List<UserData> userProvaider() throws IOException {
         var result = new ArrayList<UserData>();
-//        for (var firstname : List.of("", "first name")) {
-//                for (var lastname : List.of("", "last name")) {
-//                    for (var address : List.of("", "adres")) {
-//                        for (var mobile : List.of("", "mobile")) {
-//                            result.add(new UserData().userWithFullNameAdressMobile(firstname,
-//                                    lastname, address, mobile));
-//                        }
-//                    }
-//                }
-//        }
-//        for (int i = 0; i < 2; i++) {
-//            result.add(new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(i * 10),
-//                    CommonFunction.randomstring(i * 10), CommonFunction.randomstring(i * 10),
-//                    CommonFunction.randomstring(i * 10)));
-//        }
         var json = Files.readString(Paths.get("contakts.json"));
         ObjectMapper mapper = new ObjectMapper();
         var value = mapper.readValue(json, new TypeReference<List<UserData>>() {
@@ -102,8 +87,8 @@ public class AddUserToAdresbook extends TasteBase {
     public static List<UserData> oneUser() throws IOException {
         var result = new ArrayList<UserData>(List.of(
                 new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
-                    CommonFunction.randomstring(10), CommonFunction.randomstring( 10),
-                    CommonFunction.randomstring( 10))));
+                        CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                        CommonFunction.randomstring(10))));
         return result;
     }
 
@@ -153,6 +138,34 @@ public class AddUserToAdresbook extends TasteBase {
 
         Assertions.assertEquals(newUsersList, expectedList);
 
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("oneUser")
+    public void newUserWithHibernateWithGroup(UserData user) {
+        var oldUsersList = app.hmb().getUserList();
+
+        if (app.hmb().getGroupCount() == 0) {
+            app.getGroupHelper().createGroup(new GroupData(""
+                    , CommonFunction.randomstring(10)
+                    , CommonFunction.randomstring(10)
+                    , CommonFunction.randomstring(10)));
+        }
+        var group = app.hmb().getGroupList().get(0);
+        var oldRelated = app.hmb().getUsersInGroup(group);
+        app.getUserHelper().createUserWithGroup(user, group);
+        var newRelated = app.hmb().getUsersInGroup(group);
+
+        Comparator<UserData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        oldRelated.sort(compareById);
+        newRelated.sort(compareById);
+
+        var maxID = newRelated.get(newRelated.size() - 1).id();
+        oldRelated.add(user.withId(maxID));
+        Assertions.assertEquals(oldRelated, newRelated);
     }
 }
 
