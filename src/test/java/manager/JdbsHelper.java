@@ -72,5 +72,63 @@ public class JdbsHelper extends HelperBase {
 //                "jdbs:mysql://http://localhost/addressbook","root","");
 //    }
 
+    public int getIdByNameGroup(String groupName){
+        int group_id=0;
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+             var statement = conn.createStatement();
+             var result = statement.executeQuery(
+                     "SELECT * FROM group_list where group_name='"+groupName+"'")
+        )
+
+        {
+            if (result.next()) {
+                group_id = result.getInt("group_id");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return group_id;
+    }
+    public int getIdByNameUser(String userName){
+        int user_id=0;
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+             var statement = conn.createStatement();
+             var result = statement.executeQuery(
+                     "SELECT * FROM addressbook where firstname='"+userName+"'")
+        )
+
+        {
+            if (result.next()) {
+                user_id = result.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user_id;
+    }
+
+    public boolean checkUserInGroupe(int user_id, int group_id){
+        //int group_id=0;
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+             var statement = conn.createStatement();
+             var result = statement.executeQuery(
+                     "SELECT *\n" +
+                             "FROM address_in_groups\n" +
+                             "WHERE id='" + user_id + "'" + " AND group_id='" + group_id + "'")
+        )
+
+        {
+            if (result.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+
+    }
 
 }

@@ -1,12 +1,10 @@
 package manager;
 
-
 import model.GroupData;
 import model.UserData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -56,9 +54,9 @@ public class UserHelper {
         manager.driver.findElement(By.cssSelector("input:nth-child(75)")).click();
     }
 
-    public void createUserWithGroup(UserData user,GroupData group) {
+    public void createUserWithGroup(UserData user, GroupData group) {
         openAddNewPage();
-        fillUserFormWithGroup(user,group);
+        fillUserFormWithGroup(user, group);
     }
 
     public void modifyUser(UserData user, UserData modifayUser) {
@@ -89,17 +87,16 @@ public class UserHelper {
         type(By.name("mobile"), user.getMobile());
     }
 
-    //////////////////
     private void fillUserFormWithGroup(UserData user, GroupData group) {
         openAddNewPage();
         fillUserForm(user);
-        selectGroup(group);
+        selectGroupInUserForm(group);
         submitUserModifikation();
         returnToHomePage();
 
     }
 
-    private void selectGroup(GroupData group) {
+    private void selectGroupInUserForm(GroupData group) {
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 
@@ -123,10 +120,6 @@ public class UserHelper {
 
     private void initUserModifikationFirstElement(UserData user) {
         manager.driver.findElement(By.xpath("//a[contains(@href,'edit.php?id=')]")).click();
-
-//        List<WebElement> elements = manager.driver.findElements(By.xpath("//a[contains(@href,'edit.php?id=')]")); //код для клика по последнему элементу
-//        elements.get(elements.size()-1).click();
-
     }
 
     public int getCountUser() {
@@ -184,5 +177,44 @@ public class UserHelper {
         var rnd = new Random();
         var index = rnd.nextInt(fileName.length);
         return Paths.get(dir, fileName[index]).toString();
+    }
+
+    public void addUserToGroupeUI(UserData user, GroupData group) {
+        selektgroupeForAdd(group);
+        selectUser(user);
+        pushAddToGroupe();
+    }
+
+    private void pushAddToGroupe() {
+        manager.driver.findElement(By.xpath("//input[@value='Add to']")).click();
+    }
+
+    private void selektgroupeForAdd(GroupData group) {
+        WebElement element = manager.driver.findElement(By.xpath("//select[@name='to_group']"));
+        new Select(element).selectByVisibleText(group.getName());
+    }
+
+    private void selectUser(UserData user) {
+        manager.driver.findElement(By.xpath(String.format("//tr[./td[text()='%s']]//input[@name='selected[]']", user.getLastname()))).click();
+    }
+
+    public void refreshPage() {
+        manager.driver.navigate().refresh();
+    }
+
+    public void deleteUserInGroupeUI(UserData user, GroupData group) {
+        returnToHomePage();
+        selectGroupForSearch(group);
+        selectUser(user);
+        pushRemoveUserFromGroup(group);
+    }
+
+    private void selectGroupForSearch(GroupData group) {
+        WebElement element = manager.driver.findElement(By.xpath("//select[@name='group']"));
+        new Select(element).selectByVisibleText(group.getName());
+    }
+
+    private void pushRemoveUserFromGroup(GroupData group) {
+        manager.driver.findElement(By.xpath("//input[@name='remove']")).click();
     }
 }

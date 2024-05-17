@@ -51,7 +51,7 @@ public class HibernateHalper extends HelperBase {
         if (id.equals("")) {
             id = "0";
         }
-        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer(), data.getDeprecated());
     }
 
     public List<GroupData> getGroupList() {
@@ -138,6 +138,7 @@ public class HibernateHalper extends HelperBase {
             return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
         });
     }
+
 }
 
 

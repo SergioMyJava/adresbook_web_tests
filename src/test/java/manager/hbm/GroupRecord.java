@@ -20,6 +20,9 @@ public class GroupRecord {
     @Column (name = "group_footer")
     public String footer;
 
+    @Column (name = "deprecated")
+    public String deprecated;
+
     @ManyToMany
     @JoinTable(name = "address_in_groups",
             joinColumns = @JoinColumn(name = "group_id"),
@@ -29,10 +32,11 @@ public class GroupRecord {
     public GroupRecord() {
     }
 
-    public GroupRecord(int id, String name, String header, String footer) {
+    public GroupRecord(int id, String name, String header, String footer,String deprecated) {
         this.id = id;
         this.name = name;
         this.header = header;
         this.footer = footer;
+        this.deprecated = deprecated;
     }
 }

@@ -167,5 +167,34 @@ public class AddUserToAdresbook extends TasteBase {
         oldRelated.add(user.withId(maxID));
         Assertions.assertEquals(oldRelated, newRelated);
     }
+
+    public static List<GroupData> groupProvaiderForOne() throws IOException {
+        var result = new ArrayList<GroupData>(List.of(
+                new GroupData(""
+                        , CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10))));
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("oneUser")
+    public void addUserToGroup(UserData user) throws InterruptedException {
+        app.hmb().createUser(user);
+        var group = new GroupData(""
+                        , CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10)
+                        , CommonFunction.randomstring(10)).setDeprecated("0000-00-00 00:00:00");
+
+        app.hmb().createGroup(group);
+        var group_id = app.getJdbsHelper().getIdByNameGroup(group.getName());
+        var user_id = app.getJdbsHelper().getIdByNameUser(user.getFirstname());
+        group.withId(String.valueOf(group_id));
+        Thread.sleep(3000);
+        app.getUserHelper().refreshPage();
+        app.getUserHelper().addUserToGroupeUI(user,group);
+        Thread.sleep(3000);
+        Assertions.assertEquals(true, app.getJdbsHelper().checkUserInGroupe(user_id,group_id));
+    }
 }
 

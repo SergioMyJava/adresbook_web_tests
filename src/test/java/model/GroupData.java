@@ -8,6 +8,7 @@ public class GroupData {
     private final String name;
     private final String header;
     private final String footer;
+    private String deprecated;
 
     public GroupData(String id, String name, String header, String footer) {
         this.id = id;
@@ -17,6 +18,14 @@ public class GroupData {
 
     }
 
+    public String getDeprecated() {
+        return deprecated;
+    }
+
+    public GroupData setDeprecated(String deprecated) {
+        this.deprecated = deprecated;
+        return this;
+    }
 
     public GroupData() {
         this("", "", "", "");
