@@ -177,9 +177,11 @@ public class AddUserToAdresbook extends TasteBase {
         return result;
     }
 
-    @ParameterizedTest
-    @MethodSource("oneUser")
-    public void addUserToGroup(UserData user) throws InterruptedException {
+    @Test
+    public void addUserToGroup() throws InterruptedException {
+        UserData user = new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10));
         app.hmb().createUser(user);
         var group = new GroupData(""
                         , CommonFunction.randomstring(10)

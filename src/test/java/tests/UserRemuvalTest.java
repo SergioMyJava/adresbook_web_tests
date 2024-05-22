@@ -78,9 +78,11 @@ public class UserRemuvalTest extends TasteBase {
         return result;
     }
 
-    @ParameterizedTest
-    @MethodSource("oneUser")
-    public void deleteUserFromGroup(UserData user) throws InterruptedException {
+    @Test
+    public void deleteUserFromGroup() throws InterruptedException {
+        UserData user = new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10));
         app.hmb().createUser(user);
         var group = new GroupData(""
                 , CommonFunction.randomstring(10)
