@@ -37,8 +37,9 @@ public class GroupRemuvalTests extends TasteBase {
                     ,CommonFunction.randomstring(10)
                     ,CommonFunction.randomstring(10)));
         }
-        var oldGroups = app.getJdbsHelper().getGroupeList();
+
         app.getGroupHelper().removeAllGroups();
-        Assertions.assertEquals(oldGroups, 0);
+        var oldGroups = app.getJdbsHelper().getGroupeList();
+        Assertions.assertEquals(oldGroups.size(), 0);
     }
 }

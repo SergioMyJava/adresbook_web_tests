@@ -217,4 +217,9 @@ public class UserHelper {
     private void pushRemoveUserFromGroup(GroupData group) {
         manager.driver.findElement(By.xpath("//input[@name='remove']")).click();
     }
+
+    public String getPhone(UserData user) {
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../..tb[6]",user.id()))).getText();
+    }
 }

@@ -31,7 +31,6 @@ public class AddUserToAdresbook extends TasteBase {
         return result;
     }
 
-
     @ParameterizedTest
     @MethodSource("userProvaider")
     public void createMultiplyUsers(UserData user) throws InterruptedException {
@@ -68,7 +67,7 @@ public class AddUserToAdresbook extends TasteBase {
                 CommonFunction.randomstring(10), CommonFunction.randomNumber(10) + " "
                 + CommonFunction.randomNumber(10), CommonFunction.randomstring(10),
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10),
-                CommonFunction.randomstring(10), CommonFunction.randomstring(10), "");
+                CommonFunction.randomstring(10), CommonFunction.randomstring(10), "", "");
         app.getUserHelper().createUserInAdressbook(newUser);
         var newUsersList = app.getJdbsHelper().getUserList();
         oldUsersList.add(newUser.withId(newUsersList.get(newUsersList.size() - 1).id()));
@@ -82,7 +81,6 @@ public class AddUserToAdresbook extends TasteBase {
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10));
         app.getUserHelper().fillUserFirstLastNamePhoto(newUser);
     }
-
 
     public static List<UserData> oneUser() throws IOException {
         var result = new ArrayList<UserData>(List.of(
@@ -140,7 +138,6 @@ public class AddUserToAdresbook extends TasteBase {
 
     }
 
-
     @ParameterizedTest
     @MethodSource("oneUser")
     public void newUserWithHibernateWithGroup(UserData user) {
@@ -181,7 +178,7 @@ public class AddUserToAdresbook extends TasteBase {
     public void addUserToGroup() throws InterruptedException {
         UserData user = new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
                 CommonFunction.randomstring(10), CommonFunction.randomstring(10),
-                CommonFunction.randomstring(10));
+                String.valueOf(Math.random()*3));
         app.hmb().createUser(user);
         var group = new GroupData(""
                         , CommonFunction.randomstring(10)

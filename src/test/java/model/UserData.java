@@ -22,10 +22,11 @@ public class UserData {
     private final String byear;
     private final String id;
     private final String photo;
+    private final String secondary;
 
     public UserData(String id, String firstname, String middlename, String lastname, String nickname, String title,
                     String company, String address, String home, String mobile, String work, String fax,
-                    String email, String email2, String email3, String homepage, String byear,String photo) {
+                    String email, String email2, String email3, String homepage, String byear, String photo, String secondary) {
         this.id = id;
         this.firstname = firstname;
         this.middlename = middlename;
@@ -44,6 +45,7 @@ public class UserData {
         this.homepage = homepage;
         this.byear = byear;
         this.photo = photo;
+        this.secondary = secondary;
     }
 
 
@@ -51,37 +53,64 @@ public class UserData {
     public UserData UserDataFestLastMidlMob(String id, String firstname, String middlename, String lastname, String mobile){
         return new UserData(id, firstname, middlename, lastname, mobile, this.nickname, this.title,
                 this.company, this.address, this.home, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
     }
+
+
 
 
     public UserData userWithFullNameAdressMobile(String firstname, String lastname,
                                                  String address, String mobile) {
         return new UserData("", firstname, this.middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
     }
     public UserData() {
         this("", "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "","");
+                "", "", "", "", "", "","", "");
     }
 
     public UserData withId(String id) {
         return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
     }
 
     public UserData withFirstnameLastname(String firstname,String lastname) {
         return new UserData(this.id, firstname, this.middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo);
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
     }
 
     public UserData withPhoto(String photo) {
         return new UserData(this.id, firstname, this.middlename, lastname, this.nickname, this.title,
                 this.company, address, this.home, mobile, this.work, this.fax,
-                this.email, this.email2, this.email3, this.homepage, this.byear, photo);
+                this.email, this.email2, this.email3, this.homepage, this.byear, photo, this.secondary);
+    }
+
+    public UserData witHome(String home) {
+        return new UserData(this.id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, home, this.mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
+    }
+    public UserData withMobile(String mobile) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
+    }
+
+    public UserData withWork(String work) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, this.mobile, work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
+    }
+
+
+
+    public UserData withSecondary(String secondary) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, this.mobile, this.work, this.fax,
+                this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, secondary);
     }
 
     public String id() {
@@ -126,6 +155,10 @@ public class UserData {
 
     public String getWork() {
         return work;
+    }
+
+    public String getSecondary() {
+        return secondary;
     }
 
     public String getFax() {

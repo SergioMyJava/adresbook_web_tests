@@ -23,6 +23,12 @@ public class UserRecord {
 
     @Column(name = "mobile")
     public String 	mobile;
+    @Column(name = "home")
+    public  String home;
+    @Column(name = "work")
+    public  String work;
+    @Column(name = "phone2")
+    public  String secondary;
 
     @Column(name = "nickname")
     public  String nickname="";
@@ -32,10 +38,6 @@ public class UserRecord {
     public  String company="";
     @Column(name = "address")
     public  String address="";
-    @Column(name = "home")
-    public  String home="";
-    @Column(name = "work")
-    public  String work="";
     @Column(name = "fax")
     public  String fax="";
     @Column(name = "email")
@@ -55,12 +57,18 @@ public class UserRecord {
     public UserRecord() {
     }
 
-    public UserRecord(int id, String firstname, String middlename, String lastname, String mobile) {
+    public UserRecord(int id, String firstname, String middlename, String lastname, String mobile,String home,String work,String secondary) {
         this.id=id;
         this.firstname=firstname;
         this.lastname=lastname;
         this.middlename=middlename;
         this.mobile = mobile;
+        this.home = home;
+        this.work = work;
+        this.secondary = secondary;
     }
+
 }
+
+
 

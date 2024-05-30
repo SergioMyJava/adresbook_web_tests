@@ -10,8 +10,9 @@ import model.UserData;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class Generator {
@@ -54,28 +55,23 @@ public class Generator {
         }
     }
 
-    private List generateContakts() {
-        var result = new ArrayList<UserData>();
-
-        for (int i = 0; i < count; i++) {
-            result.add(new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(i * 10),
-                    CommonFunction.randomstring(i * 10), CommonFunction.randomstring(i * 10),
-                    CommonFunction.randomstring(i * 10)));
-        }
-        return result;
-
+    private Object generateData(Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
     }
 
-    private List generateGroups() {
-        var result = new ArrayList<GroupData>();
+    private Object generateContakts() {
+        return generateData(()-> new UserData().userWithFullNameAdressMobile(CommonFunction.randomstring(10),
+                CommonFunction.randomstring(10),
+                CommonFunction.randomstring( 10),
+                CommonFunction.randomstring(10)));
+    }
 
-        for (int i = 0; i < count; i++) {
-            result.add(new GroupData()
-                    .withHeader(CommonFunction.randomstring(i * 10))
-                    .withFooter(CommonFunction.randomstring(i * 10))
-                    .withName(CommonFunction.randomstring(i * 10)));
-        }
-        return result;
+    private Object generateGroups() {
+        return generateData(()-> new GroupData()
+                .withHeader(CommonFunction.randomstring(10))
+                .withFooter(CommonFunction.randomstring(10))
+                .withName(CommonFunction.randomstring(10)));
+
     }
 
     private void save(Object data) throws IOException {
