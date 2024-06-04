@@ -220,6 +220,11 @@ public class UserHelper {
 
     public String getPhone(UserData user) {
         return manager.driver.findElement(By.xpath(
-                String.format("//input[@id='%s']/../..tb[6]",user.id()))).getText();
+                String.format("//input[@id='%s']/../../td[6]",user.id()))).getText();
+    }
+
+    public String getMail(UserData user) {
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[5]",user.id()))).getText();
     }
 }

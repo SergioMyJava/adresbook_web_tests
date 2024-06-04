@@ -13,13 +13,13 @@ public class ContactInfoTest extends TasteBase {
     @Test
     void testPhone() {
         var users = app.hmb().getUserListT();
-//        if (app.hmb().getUserCount() == 0) {
-//            app.hmb().createUser(new UserData().UserDataFestLastMidlMob("",
-//                    CommonFunction.randomstring(10),
-//                    CommonFunction.randomstring(10),
-//                    CommonFunction.randomstring(10),
-//                    CommonFunction.randomstring(10)));
-//        }
+        if (app.hmb().getUserCount() == 0) {
+            app.hmb().createUser(new UserData().UserDataFestLastMidlMob("",
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10)));
+        }
 
         var user = users.get(0);
         var phones = app.getUserHelper().getPhone(user);
@@ -28,5 +28,24 @@ public class ContactInfoTest extends TasteBase {
                 .filter(s -> s != null && !"".equals(s))
                 .collect(Collectors.joining("\n"));
         Assertions.assertEquals(expected, phones);
+    }
+
+    @Test
+    void testMail() {
+        var users = app.hmb().getUserListT();
+        if (app.hmb().getUserCount() == 0) {
+            app.hmb().createUser(new UserData().UserDataFestLastMidlMob("",
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10),
+                    CommonFunction.randomstring(10)));
+        }
+
+        var user = users.get(0);
+        var mail = app.getUserHelper().getMail(user);
+        var expected = Stream.of(user.getEmail(), user.getEmail2(), user.getEmail3())
+                .filter(s -> s != null && !"".equals(s))
+                .collect(Collectors.joining("\n"));
+        Assertions.assertEquals(expected, mail);
     }
 }

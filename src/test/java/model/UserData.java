@@ -48,16 +48,11 @@ public class UserData {
         this.secondary = secondary;
     }
 
-
-
     public UserData UserDataFestLastMidlMob(String id, String firstname, String middlename, String lastname, String mobile){
         return new UserData(id, firstname, middlename, lastname, mobile, this.nickname, this.title,
                 this.company, this.address, this.home, this.work, this.fax,
                 this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
     }
-
-
-
 
     public UserData userWithFullNameAdressMobile(String firstname, String lastname,
                                                  String address, String mobile) {
@@ -111,6 +106,25 @@ public class UserData {
         return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
                 this.company, this.address, this.home, this.mobile, this.work, this.fax,
                 this.email, this.email2, this.email3, this.homepage, this.byear, this.photo, secondary);
+    }
+
+    public UserData withEmail(String email) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, this.mobile, this.work, this.fax,
+                email, this.email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
+    }
+
+    public UserData withEmail2(String email2) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, this.mobile, this.work, this.fax,
+                this.email, email2, this.email3, this.homepage, this.byear, this.photo, this.secondary);
+    }
+
+
+    public UserData withEmail3(String email3) {
+        return new UserData(id, this.firstname, this.middlename, this.lastname, this.nickname, this.title,
+                this.company, this.address, this.home, this.mobile, this.work, this.fax,
+                this.email, this.email2, email3, this.homepage, this.byear, this.photo, this.secondary);
     }
 
     public String id() {

@@ -2,8 +2,6 @@ package manager.hbm;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 
 @Entity
 @Table(name = "addressbook")
@@ -30,6 +28,13 @@ public class UserRecord {
     @Column(name = "phone2")
     public  String secondary;
 
+    @Column(name = "email")
+    public  String email="";
+    @Column(name = "email2")
+    public  String email2="";
+    @Column(name = "email3")
+    public  String email3="";
+
     @Column(name = "nickname")
     public  String nickname="";
     @Column(name = "title")
@@ -40,12 +45,7 @@ public class UserRecord {
     public  String address="";
     @Column(name = "fax")
     public  String fax="";
-    @Column(name = "email")
-    public  String email="";
-    @Column(name = "email2")
-    public  String email2="";
-    @Column(name = "email3")
-    public  String email3="";
+
     @Column(name = "homepage")
     public  String homepage="";
     @Column(name = "byear")
@@ -57,7 +57,10 @@ public class UserRecord {
     public UserRecord() {
     }
 
-    public UserRecord(int id, String firstname, String middlename, String lastname, String mobile,String home,String work,String secondary) {
+    public UserRecord(int id, String firstname, String middlename
+            ,String lastname, String mobile,String home
+            ,String work,String secondary, String email
+            ,String email2,String email3) {
         this.id=id;
         this.firstname=firstname;
         this.lastname=lastname;
@@ -66,6 +69,9 @@ public class UserRecord {
         this.home = home;
         this.work = work;
         this.secondary = secondary;
+        this.email= email;
+        this.email2 = email2;
+        this.email3 = email3;
     }
 
 }

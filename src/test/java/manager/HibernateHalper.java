@@ -76,8 +76,9 @@ public class HibernateHalper extends HelperBase {
         if (id.equals("")) {
             id = "0";
         }
-        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getMiddlename(),
-                data.getLastname(), data.getMobile(), data.getHome(), data.getWork(), data.getSecondary());
+        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getMiddlename()
+                ,data.getLastname(), data.getMobile(), data.getHome(), data.getWork()
+                ,data.getSecondary(), data.getEmail(),data.getEmail2(),data.getEmail3());
     }
 
     public List<UserData> getUserList() {
@@ -127,7 +128,9 @@ public class HibernateHalper extends HelperBase {
         if ("".equals(id)) {
             id = "0";
         }
-        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getLastname(), data.getMiddlename(), data.getMobile(), data.getHome(), data.getWork(), data.getSecondary());
+        return new UserRecord(Integer.parseInt(id), data.getFirstname(), data.getLastname()
+                ,data.getMiddlename(), data.getMobile(), data.getHome()
+                ,data.getWork(), data.getSecondary(),data.getEmail(),data.getEmail2(), data.getEmail3());
     }
 
 
@@ -145,14 +148,15 @@ public class HibernateHalper extends HelperBase {
     //Вот этот код переписал, для конекта и доставания usera, пока пытался прокинуть в гит нашел ошибку, теперь у меня просто Mobile нету в юзере
 
     public static UserData convertUserRecordT(UserRecord record) {   //для теста
-        UserData userData = new UserData().withId(""+record.id)
-                .withFirstnameLastname(record.firstname,record.lastname);
-        userData.withMobile(record.mobile);
-        userData.witHome(record.home);
-        userData.withWork(record.work);
-        userData.withSecondary(record.secondary);
-
-        return  userData;
+        return  new UserData().withId(""+record.id)
+                .withFirstnameLastname(record.firstname,record.lastname)
+                .withMobile(record.mobile)
+                .witHome(record.home)
+                .withWork(record.work)
+                .withSecondary(record.secondary)
+                .withEmail(record.email)
+                .withEmail2(record.email2)
+                .withEmail3(record.email3);
     }
 
     public List<UserData> getUserListT() {
