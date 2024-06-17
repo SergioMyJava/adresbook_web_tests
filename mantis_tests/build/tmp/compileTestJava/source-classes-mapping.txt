@@ -1,0 +1,10 @@
+ru/stqa/mantis/manager/ApplicationManager.java
+ ru.stqa.mantis.manager.ApplicationManager
+ru/stqa/mantis/manager/SessionHelper.java
+ ru.stqa.mantis.manager.SessionHelper
+ru/stqa/mantis/tests/LoginTest.java
+ ru.stqa.mantis.tests.LoginTest
+ru/stqa/mantis/tests/TasteBase.java
+ ru.stqa.mantis.tests.TasteBase
+ru/stqa/mantis/manager/HelperBase.java
+ ru.stqa.mantis.manager.HelperBase
